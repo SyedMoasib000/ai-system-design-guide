@@ -1632,6 +1632,171 @@ async def call_llm_with_retry(prompt):
 
 ---
 
+## Ensemble Methods Questions
+
+### Q40: When would you use Self-Consistency vs Best-of-N sampling?
+
+**What they're testing:**
+- Understanding of inference-time compute tradeoffs
+- Knowledge of appropriate use cases for each technique
+- Practical cost-accuracy considerations
+
+**Approach:**
+1. Define both techniques
+2. Explain when each excels
+3. Discuss the key differentiator: extractable answers vs open-ended
+
+**Sample Answer:**
+
+"These serve fundamentally different purposes:
+
+**Self-Consistency** is for tasks with extractable, verifiable answers. I generate k reasoning paths with temperature 0.5-0.8, extract the final answer from each, and take a majority vote. This works for:
+- Math problems (extract final number)
+- Multiple choice (vote on labels)
+- Short-form QA (vote on answers)
+
+The key requirement is that I can compare answers for equality.
+
+**Best-of-N** is for open-ended generation where there is no single right answer. I generate N samples, score each with a reward model, and select the best. This works for:
+- Creative writing
+- Code generation (many valid solutions)
+- Explanations
+
+Here I need a reward model or judge since I cannot just compare for equality.
+
+**Key decision:** Can I extract and compare answers? If yes, use Self-Consistency. If no, use Best-of-N.
+
+I would not use Self-Consistency for creative writing (no extractable answer) or Best-of-N for math (voting is simpler and cheaper than reward scoring)."
+
+---
+
+### Q41: How do you prevent reward hacking when using Best-of-N?
+
+**What they're testing:**
+- Awareness of reward model failure modes
+- Understanding of ensemble techniques for robustness
+- Practical mitigation strategies
+
+**Approach:**
+1. Define reward hacking
+2. Explain why it happens
+3. Provide multiple mitigation strategies
+
+**Sample Answer:**
+
+"Reward hacking is when the model exploits weaknesses in the reward model rather than genuinely improving quality. For example, the model might learn that longer responses score higher, so it pads with filler.
+
+**My mitigations:**
+
+1. **Reward model ensemble**: Use 3+ diverse reward models. A sample that hacks one RM is unlikely to hack all of them.
+
+2. **Conservative aggregation**: Instead of mean score, use 25th percentile or minimum. This selects samples that score well across all RMs.
+
+3. **Diversity monitoring**: If sample diversity drops, the model may be exploiting a narrow hack. I track embedding diversity across samples.
+
+4. **Human calibration**: Periodically validate that RM-selected samples match human preferences.
+
+5. **Multi-dimensional scoring**: Score on quality, safety, relevance separately. Require good scores on all dimensions.
+
+The key insight is that any single reward signal can be gamed. Ensembles make gaming much harder."
+
+---
+
+### Q42: Design an evaluation system for comparing two LLMs on open-ended tasks.
+
+**What they're testing:**
+- Knowledge of LLM-as-judge techniques
+- Awareness of evaluation biases
+- Practical evaluation pipeline design
+
+**Strong answer includes:**
+- Panel of judges for reduced bias
+- Pairwise comparison with positional debiasing
+- Inter-rater agreement metrics
+- Human calibration
+
+**Sample Answer:**
+
+"Comparing LLMs on open-ended tasks requires careful evaluation design to avoid biases.
+
+**My approach:**
+
+1. **Panel of diverse judges**: Use 3-5 models from different families (Claude, GPT-4, Gemini) as judges. Same-family models share biases, so diversity matters.
+
+2. **Pairwise comparison with positional debiasing**: Models prefer the first position 60-70% of the time. I run each comparison twice with swapped positions. If winner changes with position, I mark it as a tie.
+
+3. **Structured rubric**: Clear criteria with examples at each score level. This improves consistency across judges.
+
+4. **Inter-rater agreement**: I track how often judges agree. Low agreement indicates the task is ambiguous or judges need calibration.
+
+5. **Human validation**: I validate a sample of evaluations against human preferences. If correlation is below 0.7, I revise my rubric.
+
+For statistical significance, I use at least 500 comparison pairs and compute confidence intervals on win rates."
+
+---
+
+### Q43: What is the difference between ensemble learning and model arbitration?
+
+**What they're testing:**
+- Conceptual clarity on aggregation vs selection
+- Understanding when to use each approach
+
+**Sample Answer:**
+
+"These are fundamentally different approaches:
+
+**Ensemble learning** combines outputs from all models into a blended prediction. The relationship is collaborative - models compensate for each other's errors. Methods include voting, averaging, stacking. The final output is a composite derived from all models.
+
+**Model arbitration** selects a single best output from candidates. The relationship is competitive - outputs are judged against each other. Methods include reward model scoring, ranking, routing. The final output comes from one chosen winner.
+
+**When to use each:**
+
+Use **ensemble** when:
+- There is a correct answer format (classification, math)
+- You want robustness and reduced variance
+- All models contribute useful signal
+
+Use **arbitration** when:
+- Output is open-ended (creative, explanations)
+- You want best quality, not average quality
+- You have a reliable scoring function
+
+They can be combined: generate diverse candidates (benefits from ensemble thinking), then select the best (arbitration). A panel of judges uses ensemble for scoring, then arbitration for final selection."
+
+---
+
+### Q44: When would you use Multi-Agent Debate vs Mixture of Agents?
+
+**What they're testing:**
+- Understanding of multi-model coordination patterns
+- Ability to match patterns to use cases
+
+**Sample Answer:**
+
+"These are different coordination patterns with different purposes:
+
+**Multi-Agent Debate** is adversarial. Multiple models critique each other over 2-3 rounds. Each model sees others' answers and must defend or revise their position. Best for:
+- Fact verification (catching hallucinations)
+- Error correction (finding mistakes)
+- Complex reasoning (stress-testing logic)
+
+The value is adversarial pressure that catches errors.
+
+**Mixture of Agents (MoA)** is collaborative. Layer 1 models generate diverse perspectives, Layer 2 aggregator synthesizes them. Best for:
+- Complex synthesis (reports, summaries)
+- Multi-domain problems (need different expertise)
+- Creative tasks (want diverse ideas combined)
+
+The value is combining complementary strengths.
+
+**Decision:**
+- Need to verify/challenge: Use Debate
+- Need to synthesize/combine: Use MoA
+
+For a financial report, I might use both: MoA to generate comprehensive analysis from different perspectives, then Debate to verify factual claims before publication."
+
+---
+
 ## System Design Scenarios
 
 ### Scenario 1: Design a customer support chatbot
