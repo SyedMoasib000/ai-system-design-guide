@@ -22,179 +22,166 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 
 | Tier | Characteristics | Examples | Use Case |
 |------|-----------------|----------|----------|
-| Frontier | State-of-the-art, largest, most capable | GPT-4o, Claude 3.5 Opus, Gemini Ultra | Complex reasoning, high-stakes |
-| Strong | Near-frontier, good balance | Claude 3.5 Sonnet, GPT-4o-mini, Gemini 1.5 Pro | Production workloads |
-| Fast | Optimized for speed and cost | Claude 3.5 Haiku, GPT-4o-mini, Gemini 1.5 Flash | High-volume, low-latency |
-| Small | Local deployment, edge | Llama 3 8B, Mistral 7B, Gemma 2B | Self-hosted, privacy |
+| **Ultra (New)** | Super-intelligent reasoning, agentic mastery | GPT-5.2, Claude 4.5 Opus, Gemini 3.0 Pro | Full autonomous agents, R&D |
+| Frontier | State-of-the-art general intelligence | Claude 3.7 Sonnet, GPT-4o, Gemini 2.0 Pro | Complex reasoning, production |
+| Strong | High efficiency, near-frontier | DeepSeek V3.2, GPT-5.2-mini | Scalable business logic |
+| Fast | Sub-100ms, cost-optimized | Gemini 3 Flash, Claude 4.5 Haiku, o4-mini | High-volume streaming, UI |
+| Small | Private, edge, specialized | Llama 4 8B, Nemotron 3 Nano, Phi-4 | Local privacy, specific tasks |
 
-### By Access Type
+### By Reasoning Mode (New for 2025)
 
-| Type | Characteristics | Examples |
-|------|-----------------|----------|
-| Proprietary API | Closed weights, API access | OpenAI, Anthropic, Google |
-| Open Weights | Downloadable, restrictive license | Llama 3, Mistral |
-| Fully Open | Open weights and training data | OLMo, Pythia |
-
-### By Modality
-
-| Type | Inputs | Outputs | Examples |
-|------|--------|---------|----------|
-| Text-only | Text | Text | GPT-4, Llama |
-| Multimodal | Text + Images | Text | GPT-4V, Claude 3.5, Gemini |
-| Vision-Language | Images | Text | LLaVA, BLIP-2 |
-| Audio | Audio | Text/Audio | Whisper, Gemini |
+| Mode | Capability | Models | Use Case |
+|------|------------|--------|----------|
+| **Standard** | Fast, intuitive response | GPT-4o, Claude 3.5 Sonnet | Chat, simple extraction |
+| **Thinking** | Internal CoT before output | o1, Claude 3.7 (Reasoning), DeepSeek-R1 | Math, code debugging |
+| **Hybrid** | User-controllable reasoning depth | Claude 3.7 Sonnet | Variable complexity tasks |
 
 ---
 
 ## Frontier Models
 
-### GPT-4o (OpenAI)
+### GPT-5.2 (OpenAI)
 
 | Attribute | Value |
 |-----------|-------|
-| Context Window | 128K tokens |
-| Input Cost | $2.50 / 1M tokens |
-| Output Cost | $10 / 1M tokens |
-| Multimodal | Text, Image, Audio |
-| Strengths | General reasoning, code, instruction following |
-| Released | May 2024 |
+| Context Window | 512K tokens (Native) |
+| Input Cost | $5.00 / 1M tokens |
+| Output Cost | $20 / 1M tokens |
+| Multimodal | Native Omni (Text, Vision, Audio, Video) |
+| Highlights | Agentic tool-calling, long-horizon planning |
+| Released | December 2025 |
 
-**Best for:** Complex reasoning, code generation, multimodal tasks
-**Considerations:** Cost at scale, no self-hosting option
+**Best for:** Professional knowledge work, long-running agents, complex planning.
+**Considerations:** High cost per token; optimized for agentic workflows.
 
-### Claude 3.5 Sonnet (Anthropic)
+### Claude 4.5 Opus (Anthropic)
+
+| Attribute | Value |
+|-----------|-------|
+| Context Window | 400K tokens |
+| Input Cost | $15 / 1M tokens |
+| Output Cost | $75 / 1M tokens |
+| Multimodal | Text, Vision (SoTA layout analysis) |
+| Highlights | Surpassed 80% on SWE-bench Verified |
+| Released | November 2025 |
+
+**Best for:** Autonomous software engineering, complex legal/medical analysis.
+**Considerations:** Most expensive model in the market; benchmark leader.
+
+### Claude 3.7 Sonnet (Anthropic)
 
 | Attribute | Value |
 |-----------|-------|
 | Context Window | 200K tokens |
 | Input Cost | $3 / 1M tokens |
 | Output Cost | $15 / 1M tokens |
-| Multimodal | Text, Image |
-| Strengths | Long context, coding, nuanced understanding |
-| Released | June 2024 |
+| Highlights | Hybrid Reasoning (toggle between fast/deep) |
+| Released | February 2025 |
 
-**Best for:** Code, long documents, nuanced tasks
-**Considerations:** Slightly more conservative outputs
+**Best for:** Coding, front-end web development, "Claude Code" agent.
 
-### Claude 3.5 Opus (Anthropic)
+### Gemini 3.0 Pro (Google)
 
 | Attribute | Value |
 |-----------|-------|
-| Context Window | 200K tokens |
-| Input Cost | $15 / 1M tokens |
-| Output Cost | $75 / 1M tokens |
-| Multimodal | Text, Image |
-| Strengths | Highest capability, complex tasks |
-| Released | 2024 |
-
-**Best for:** Most demanding tasks, research, complex analysis
-**Considerations:** 5x cost of Sonnet
-
-### Gemini 1.5 Pro (Google)
-
-| Attribute | Value |
-|-----------|-------|
-| Context Window | 1M tokens (2M in preview) |
+| Context Window | 2.5M tokens (Native) |
 | Input Cost | $1.25 / 1M tokens |
 | Output Cost | $5 / 1M tokens |
-| Multimodal | Text, Image, Audio, Video |
-| Strengths | Massive context, video understanding |
-| Released | February 2024 |
+| Multimodal | Parallel processing of Video/Audio/Text |
+| Highlights | Near human-like responsiveness in voice |
+| Released | Late 2025 |
 
-**Best for:** Very long documents, video analysis
-**Considerations:** Latency can be higher
+**Best for:** Massive codebase ingestion, real-time multimodal interaction.
 
-### Model Comparison: Frontier Tier
+### Model Comparison: Frontier Tier (Dec 2025)
 
-| Model | Reasoning | Code | Long Context | Cost | Speed |
-|-------|-----------|------|--------------|------|-------|
-| GPT-4o | ★★★★★ | ★★★★★ | ★★★★ | ★★★ | ★★★★ |
-| Claude 3.5 Sonnet | ★★★★★ | ★★★★★ | ★★★★★ | ★★★ | ★★★★ |
-| Gemini 1.5 Pro | ★★★★ | ★★★★ | ★★★★★ | ★★★★ | ★★★ |
-| Claude 3.5 Opus | ★★★★★ | ★★★★★ | ★★★★★ | ★ | ★★★ |
+| Model | Reasoning | Coding | Context | Agentic | Cost |
+|-------|-----------|--------|---------|---------|------|
+| GPT-5.2 | ★★★★★ | ★★★★★ | ★★★★ | ★★★★★ | $$$ |
+| Claude 4.5 Opus | ★★★★★ | ★★★★★ | ★★★★ | ★★★★★ | $$$$$ |
+| Gemini 3.0 Pro | ★★★★ | ★★★★ | ★★★★★ | ★★★★ | $$ |
+| Claude 3.7 Sonnet | ★★★★★ | ★★★★★ | ★★★★ | ★★★★ | $$$ |
+
+### Production Heritage & Maturity
+
+While the "Ultra" tier (GPT-5.2, Claude 4.5) represents the bleeding edge, many enterprise systems remain on the **Battle-Tested Frontier** models for standard production workloads.
+
+| Model Family | Production Since | Maturity Note |
+|--------------|------------------|---------------|
+| **GPT-4o** | May 2024 | Most mature ecosystem; lowest latency variance; highest rate limits. |
+| **Claude 3.5 Sonnet** | June 2024 | Gold standard for tool-use reliability and structured output in 2024-2025. |
+| **Gemini 1.5 Pro** | May 2024 | Pioneer of mass-scale context; highly stable for multi-hour video analysis. |
+| **o1-preview** | Sept 2024 | First to prove "Inference-time Scaling" in production at scale. |
+
+**Why stay on "Older" Frontier models?**
+1. **Consistency**: New models often have "release-window" latency spikes and behavior shifts.
+2. **Cost Efficiency**: Providers often discount the previous generation significantly as new ones launch.
+3. **Guardrail Tuning**: Security and moderation layers for 4o/3.5 are significantly more refined and "broken-in."
 
 ---
 
 ## Open Source Models
 
-### Llama 3 Family (Meta)
+### Llama 4 Family (Meta)
 
 | Model | Parameters | Context | License | Notes |
 |-------|------------|---------|---------|-------|
-| Llama 3 8B | 8B | 8K | Llama License | Best small model |
-| Llama 3 70B | 70B | 8K | Llama License | Strong open model |
-| Llama 3.1 405B | 405B | 128K | Llama License | Frontier-competitive |
+| Llama 4 8B | 8B | 128K | Llama 4 | Best-in-class small model |
+| Llama 4 70B | 70B | 128K | Llama 4 | Strongest open-weight reasoning |
+| Llama 4 405B | 405B | 256K | Llama 4 | Frontier-omni competitive |
 
 **Strengths:**
-- Excellent quality-to-size ratio
-- Large community and tooling
-- Extensive fine-tuned variants
+- Native multimodality (Text/Vision) across all sizes
+- Significantly improved tool-use and JSON follow
+- 128K context window is now the standard minimum
 
-**License note:** Llama license allows commercial use with restrictions for large deployments (700M+ monthly users).
+### Nemotron 3 Family (Nvidia)
 
-### Mistral Family
-
-| Model | Parameters | Context | License | Notes |
-|-------|------------|---------|---------|-------|
-| Mistral 7B | 7B | 32K | Apache 2.0 | Sliding window attention |
-| Mixtral 8x7B | 47B (12B active) | 32K | Apache 2.0 | MoE architecture |
-| Mistral Large | API | 128K | Proprietary | Via API only |
+| Model | Parameters | Architecture | Notes |
+|-------|------------|--------------|-------|
+| Nemotron 3 Ultra | 500B | MoE | Optimized for agentic systems |
+| Nemotron 3 Super | 120B | MoE | High throughput, low latency |
+| Nemotron 3 Nano | 4B | Dense | On-device agentic tasks |
 
 **Strengths:**
-- Efficient architecture (GQA, sliding window)
-- Apache 2.0 license for base models
-- Strong for size
+- Highest throughput for agentic loops
+- Integrated "SteerLM" for real-time tone adjustment
 
-### Qwen Family (Alibaba)
+### DeepSeek Family
 
-| Model | Parameters | Context | License | Notes |
-|-------|------------|---------|---------|-------|
-| Qwen 2.5 7B | 7B | 128K | Apache 2.0 | Excellent multilingual |
-| Qwen 2.5 72B | 72B | 128K | Apache 2.0 | Near-frontier quality |
-
-**Strengths:**
-- Excellent multilingual (especially CJK)
-- Strong coding capability
-- Permissive license
-
-### Open Model Comparison
-
-| Model | Quality | Inference Speed | License Freedom | Community |
-|-------|---------|-----------------|-----------------|-----------|
-| Llama 3.1 70B | ★★★★★ | ★★★ | ★★★★ | ★★★★★ |
-| Mixtral 8x7B | ★★★★ | ★★★★ | ★★★★★ | ★★★★ |
-| Qwen 2.5 72B | ★★★★★ | ★★★ | ★★★★★ | ★★★ |
-| Mistral 7B | ★★★ | ★★★★★ | ★★★★★ | ★★★★ |
+| Model | Parameters | Status | Notes |
+|-------|------------|--------|-------|
+| DeepSeek-V3.2 | 671B (MoE) | Frontier | GPT-4o level performance at 1/5 cost |
+| DeepSeek-R1 | 671B | Reasoning | Competitive with o1/Claude 3.7 |
+| DeepSeek-V3.2-Spec | 671B | Ultra | Heavyweight logic focus |
 
 ---
 
 ## Specialized Models
 
-### Coding Models
+### Coding Mastery (late 2025)
 
-| Model | Base | Specialization | Best For |
-|-------|------|----------------|----------|
-| Codestral | Mistral | Code generation | Full-stack coding |
-| StarCoder2 | Open | Code completion | IDE integration |
-| DeepSeek Coder | DeepSeek | Code, math | Algorithmic problems |
-| CodeLlama | Llama 2 | Code | General coding |
+| Model | Specialization | Why it wins |
+|-------|----------------|-------------|
+| **Claude 4.5 Opus** | Software Engineering | Highest SWE-bench Verified score (80.9%) |
+| **GPT-5.2** | Agentic Coding | Best at architectural refactoring |
+| **DeepSeek-Coder-V3** | Algorithmic code | Best price-to-performance for IDEs |
 
-### Math and Reasoning
+### Reasoning & Math
 
 | Model | Approach | Best For |
 |-------|----------|----------|
-| DeepSeek-Math | Specialized training | Mathematical reasoning |
-| WizardMath | Fine-tuned | Word problems |
-| Phi-3 | Small but capable | Resource-constrained reasoning |
+| **OpenAI o3** | High-compute reasoning | Autonomous tool use in complex envs |
+| **DeepSeek-R1** | RL-based thinking | Logical inference, competitive math |
+| **Nemotron-Reasoning** | Open reasoning | Self-hosted logical tasks |
 
-### Long Context Models
+### Long Context (2M+)
 
-| Model | Context | Notes |
-|-------|---------|-------|
-| Gemini 1.5 Pro | 1M | Production, video support |
-| Claude 3.5 | 200K | Reliable long-context |
-| GPT-4 Turbo | 128K | Good long-context |
-| Llama 3.1 | 128K | Open source option |
+| Model | Window | Recall Performance |
+|-------|--------|--------------------|
+| **Gemini 3.0 Pro** | 2.5M | 99%+ Needle-in-a-Haystack |
+| **Gemini 3 Flash** | 1.0M | Fast, cost-effective long context |
+| **Llama 4 70B** | 128K | Reliable mid-length open context |
 
 ---
 
@@ -299,33 +286,35 @@ Assume 1M requests/day, 1K input + 500 output tokens average:
 
 ## Capability Comparison
 
+## Capability Comparison
+
 ### Benchmark Performance (Approximate, December 2025)
 
-| Model | MMLU | HumanEval | GSM8K | MT-Bench |
-|-------|------|-----------|-------|----------|
-| GPT-4o | 87.2 | 90.2 | 95.3 | 9.3 |
-| Claude 3.5 Sonnet | 88.7 | 92.0 | 96.4 | 9.1 |
-| Gemini 1.5 Pro | 85.9 | 84.1 | 92.5 | 8.9 |
-| Llama 3.1 405B | 88.0 | 89.1 | 94.2 | 8.8 |
-| Llama 3.1 70B | 82.0 | 80.5 | 88.8 | 8.2 |
-| GPT-4o-mini | 82.0 | 87.0 | 93.2 | 8.5 |
-| Claude Haiku | 75.2 | 75.9 | 88.0 | 8.1 |
-| Mistral 7B | 62.5 | 26.9 | 52.2 | 6.8 |
+| Model | MMLU | HumanEval | GSM8K | SWE-bench (Ver) |
+|-------|------|-----------|-------|-----------------|
+| **Claude 4.5 Opus** | 91.2 | 96.0 | 98.2 | 80.9% |
+| **GPT-5.2** | 90.5 | 94.2 | 97.8 | 76.5% |
+| **Claude 3.7 Sonnet** | 89.2 | 93.0 | 97.1 | 72.0% |
+| **Gemini 3.0 Pro** | 88.5 | 89.1 | 95.2 | 68.4% |
+| **DeepSeek-R1** | 87.9 | 91.0 | 96.5 | 65.2% |
+| **Llama 4 405B** | 88.8 | 90.5 | 95.8 | 66.8% |
+| **GPT-5.2-mini** | 84.5 | 88.0 | 94.2 | 55.0% |
+| **Gemini 3 Flash** | 83.0 | 85.2 | 92.5 | 48.0% |
 
-*Benchmark scores are approximate and may vary. Always verify with official sources.*
+*Benchmark scores are approximate based on late 2025 releases. Always verify with official technical reports.*
 
-### Task-Specific Recommendations
+### Task-Specific Recommendations (Dec 2025)
 
 | Task | Recommended Models | Why |
 |------|-------------------|-----|
-| Complex reasoning | Claude Sonnet, GPT-4o | Highest capability |
-| Code generation | Claude Sonnet, Codestral | Strong code understanding |
-| Long document Q&A | Gemini 1.5 Pro, Claude | Large context windows |
-| High-volume API | GPT-4o-mini, Claude Haiku | Cost and speed |
-| Image understanding | GPT-4o, Gemini, Claude | Vision capability |
-| Self-hosted production | Llama 3.1 70B | Quality-cost balance |
-| Edge deployment | Mistral 7B, Llama 8B | Size constraints |
-| Multilingual | Qwen 2.5, Claude, Gemini | Multilingual training |
+| **Software Engineering** | Claude 4.5 Opus, Claude 3.7 | "Claude Code" integration, SoTA SWE-bench |
+| **Complex Reasoning** | o3, DeepSeek-R1, Claude 3.7 | Native "Thinking" modes for multi-step logic |
+| **Autonomous Agents** | GPT-5.2, Claude 4.5 Opus | Best at tool-use reliability and planning |
+| **Long Context RAG** | Gemini 3.0 Pro (2.5M) | Unmatched context depth and recall |
+| **Real-time Multimodal** | Gemini 3 Flash, GPT-4o | Parallel vision/audio/text streams |
+| **High-volume API** | Gemini 3 Flash, o4-mini | Lowest cost per token in class |
+| **Private Production** | Llama 4 70B, Nemotron 3 | High capability with local control |
+| **Logic/Debug** | o1, o3, DeepSeek-R1 | Spend compute at test-time for accuracy |
 
 ---
 

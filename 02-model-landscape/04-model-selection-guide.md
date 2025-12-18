@@ -17,52 +17,52 @@ A practical framework for choosing the right LLM for your use case, considering 
 
 ## Selection Framework
 
-### Decision Tree
+### Decision Tree (Dec 2025)
 
 ```
 Start Here
     │
-    ├── Need frontier capability (best quality)?
+    ├── Need autonomous agents / long-horizon planning?
     │   └── Yes ─────────────────────────────────────────┐
     │   └── No ──┐                                       │
     │            │                                       ▼
     │            │                              ┌─────────────────┐
-    │            │                              │ GPT-4o / Claude │
-    │            │                              │ 3.5 Sonnet / o1 │
+    │            │                              │ GPT-5.2 / Claude│
+    │            │                              │ 4.5 Opus / o3   │
     │            │                              └─────────────────┘
     │            │
-    ├── Cost is primary constraint?
+    ├── Need best software engineering / coding?
     │   └── Yes ─────────────────────────────────────────┐
     │   └── No ──┐                                       │
     │            │                                       ▼
     │            │                              ┌─────────────────┐
-    │            │                              │ GPT-4o-mini /   │
-    │            │                              │ Claude Haiku    │
+    │            │                              │ Claude 4.5 Opus │
+    │            │                              │ Claude 3.7 Sonnet│
     │            │                              └─────────────────┘
     │            │
-    ├── Need very long context (>200K)?
+    ├── Need to process massive context (>1M)?
     │   └── Yes ─────────────────────────────────────────┐
     │   └── No ──┐                                       │
     │            │                                       ▼
     │            │                              ┌─────────────────┐
-    │            │                              │ Gemini 1.5 Pro  │
-    │            │                              │ (1-2M context)  │
+    │            │                              │ Gemini 3.0 Pro  │
+    │            │                              │ (2.5M context)  │
     │            │                              └─────────────────┘
     │            │
-    ├── Need to self-host / data stays local?
+    ├── Cost-sensitive high volume?
     │   └── Yes ─────────────────────────────────────────┐
     │   └── No ──┐                                       │
     │            │                                       ▼
     │            │                              ┌─────────────────┐
-    │            │                              │ Llama 3 / Qwen  │
-    │            │                              │ / Mistral       │
+    │            │                              │ Gemini 3 Flash /│
+    │            │                              │ o4-mini         │
     │            │                              └─────────────────┘
     │            │
-    └── Default: General purpose
+    └── Default: Production Choice
                  ▼
         ┌─────────────────┐
-        │ GPT-4o / Claude │
-        │ 3.5 Sonnet      │
+        │ Claude 3.7 Sonnet│
+        │ GPT-5.2-mini    │
         └─────────────────┘
 ```
 
@@ -70,13 +70,10 @@ Start Here
 
 | Factor | Weight | Considerations |
 |--------|--------|----------------|
-| Task performance | High | Benchmark on YOUR specific task |
-| Cost per token | Medium-High | Input + output, volume-based |
-| Latency | Variable | TTFT, throughput, streaming |
-| Context window | Variable | Required context size |
-| Data residency | High (regulated) | Where data is processed |
-| Ecosystem | Medium | Tools, integrations, support |
-| Reliability | High | Uptime, rate limits |
+| **Agentic Reliability** | High | Tool-calling accuracy, multi-step planning |
+| **Context Recall** | High | Needle-in-a-haystack performance at 1M+ |
+| **Ecosystem Maturity** | High | **(New)** Production track record, SDK support, and rate limit ceilings |
+| **Cost / Output Token** | Medium | Agentic loops consume 5x-10x more tokens |
 
 ---
 
@@ -84,117 +81,79 @@ Start Here
 
 ### Frontier Model Comparison (December 2025)
 
-| Model | Strengths | Weaknesses | Context | Best For |
-|-------|-----------|------------|---------|----------|
-| **GPT-4o** | Balanced, good reasoning, multimodal | Higher cost than mini | 128K | General purpose, production |
-| **Claude 3.5 Sonnet** | Excellent coding, instruction following | Slightly slower | 200K | Code, complex instructions |
-| **Claude 3.5 Opus** | Best reasoning, nuance | Expensive, slower | 200K | High-stakes decisions |
-| **Gemini 1.5 Pro** | Massive context, cost-effective | Slightly less reliable | 2M | Long-context applications |
-| **o1** | Strong reasoning, math | Very expensive, slow | 128K | Complex reasoning, research |
-
-⚠️ Verify current pricing and capabilities - model landscape changes rapidly.
+| Model | Strengths | Cons | Context | Best For |
+|-------|-----------|------|---------|----------|
+| **GPT-5.2** | Agentic planning, native omni | High cost | 512K | Multi-agent systems |
+| **Claude 4.5 Opus** | SoTA Software Engineering | Expensive | 400K | Complex codebases |
+| **Claude 3.7 Sonnet** | Hybrid Reasoning depth | High peak latency | 200K | General production |
+| **Gemini 3.0 Pro** | 2.5M context, multimodal | Latency spikes | 2.5M | Large data ingestion |
+| **o3** | Extreme logic/reasoning | High cost/latency | 128K | Math, complex debug |
 
 ### Budget Model Comparison
 
-| Model | Cost (per 1M tokens) | Quality | Context | Best For |
-|-------|---------------------|---------|---------|----------|
-| **GPT-4o-mini** | $0.15 / $0.60 | Very good | 128K | High-volume, cost-sensitive |
-| **Claude 3.5 Haiku** | $0.25 / $1.25 | Very good | 200K | Fast responses, cost-sensitive |
-| **Gemini 1.5 Flash** | $0.075 / $0.30 | Good | 1M | Very high volume, long context |
+| Model | Cost (per 1M input/output) | Quality | Context | Best For |
+|-------|----------------------------|---------|---------|----------|
+| **Gemini 3 Flash** | $0.05 / $0.20 | Frontier-tier | 1M | High-volume RAG |
+| **o4-mini** | $0.10 / $0.40 | Excellent | 128K | Fast reasoning tasks |
+| **Llama 4 8B** | Self-hosted (H100/L40) | Strong | 128K | On-device, private |
 
 ### Open Source Models
 
 | Model | Parameters | Quality | Best For |
 |-------|------------|---------|----------|
-| **Llama 3.1 70B** | 70B | Near-frontier | General purpose self-hosted |
-| **Llama 3.1 405B** | 405B | Frontier-level | Maximum open source quality |
-| **Qwen 2.5 72B** | 72B | Excellent | Multilingual, math |
-| **Mistral Large** | 123B | Very good | European data residency |
-| **DeepSeek-V3** | 671B MoE | Frontier-competitive | Cost-effective inference |
+| **Llama 4 70B** | 70B | Frontier-competitive | Universal open choice |
+| **Nemotron 3 Ultra** | 500B MoE | Agentic mastery | Scalable open agents |
+| **DeepSeek V3.2** | 671B MoE | Ultra performance | Lowest TCO for frontier quality |
 
 ---
 
 ## Use Case Mapping
 
-### By Application Type
+### By Application Type (Dec 2025)
 
 | Use Case | Recommended Models | Rationale |
 |----------|-------------------|-----------|
-| **Customer support** | Claude Haiku, GPT-4o-mini | High volume, cost-sensitive |
-| **Code generation** | Claude Sonnet, GPT-4o | Best coding capabilities |
-| **Document analysis** | Gemini 1.5 Pro | Long context for full documents |
-| **Creative writing** | Claude Sonnet, GPT-4o | Quality and style |
-| **Data extraction** | GPT-4o-mini, Claude Haiku | Structured output, high volume |
-| **Research/reasoning** | o1, Claude Opus | Complex multi-step reasoning |
-| **Embeddings** | text-embedding-3-large, Voyage | Specialized for retrieval |
+| **Autonomous Dev** | Claude 4.5 Opus, Claude 3.7 | "Claude Code" agentic mastery & verified coding |
+| **Enterprise RAG** | Gemini 3.0 Pro, Gemini 3 Flash | 2.5M context removes retrieval complexity |
+| **customer Support** | Gemini 3 Flash, GPT-5.2-mini | Near-zero latency with strong reasoning |
+| **Reasoning / Debug** | o3, DeepSeek-R1 | Best at "Thinking" mode for code/logic |
+| **Video/Multimodal** | Gemini 3.0 Pro, GPT-5.2 | Native interleaved multimodal processing |
+| **Private Agent** | Llama 4 70B, Nemotron 3 | Strongest open-weight agentic planning |
 
 ### By Constraint
 
 | Constraint | Approach |
 |------------|----------|
-| **Max latency < 500ms** | Use smaller models, optimize prompts |
-| **Cost < $0.001/query** | GPT-4o-mini, aggressive caching |
-| **Data cannot leave infra** | Self-hosted Llama 3.1, Qwen |
-| **100% uptime required** | Multi-provider with failover |
-| **Regulatory compliance** | Audit trail, approved providers |
+| **Max latency < 100ms** | Gemini 3 Flash, o4-mini, or self-hosted Nano models |
+| **Context > 1M tokens** | Gemini 3.0 Pro (native 2.5M) |
+| **Zero-data Leakage** | Llama 4 70B on internal VPC |
+| **Complex Tool Use** | Claude 4.5 Opus or GPT-5.2 (best planning accuracy) |
 
 ---
 
 ## Cost Analysis
 
-### Cost Modeling
+### Cost Modeling (Dec 2025)
 
-```python
-class CostModeler:
-    # Prices per 1M tokens (December 2025, verify current)
-    PRICING = {
-        "gpt-4o": {"input": 2.50, "output": 10.00},
-        "gpt-4o-mini": {"input": 0.15, "output": 0.60},
-        "claude-3.5-sonnet": {"input": 3.00, "output": 15.00},
-        "claude-3.5-haiku": {"input": 0.25, "output": 1.25},
-        "gemini-1.5-pro": {"input": 1.25, "output": 5.00},
-    }
-    
-    def estimate_monthly_cost(
-        self,
-        model: str,
-        queries_per_month: int,
-        avg_input_tokens: int,
-        avg_output_tokens: int
-    ) -> float:
-        pricing = self.PRICING[model]
-        
-        total_input = queries_per_month * avg_input_tokens
-        total_output = queries_per_month * avg_output_tokens
-        
-        input_cost = (total_input / 1_000_000) * pricing["input"]
-        output_cost = (total_output / 1_000_000) * pricing["output"]
-        
-        return input_cost + output_cost
-    
-    def compare_models(
-        self,
-        queries_per_month: int,
-        avg_input_tokens: int,
-        avg_output_tokens: int
-    ) -> dict:
-        comparisons = {}
-        for model in self.PRICING:
-            comparisons[model] = self.estimate_monthly_cost(
-                model, queries_per_month, avg_input_tokens, avg_output_tokens
-            )
-        return dict(sorted(comparisons.items(), key=lambda x: x[1]))
-```
+| Model | Input / 1M | Output / 1M | Notes |
+|-------|------------|-------------|-------|
+| **GPT-5.2** | $5.00 | $20.00 | Agentic premium |
+| **Claude 4.5 Opus** | $15.00 | $75.00 | Specialized engineering |
+| **Claude 3.7 Sonnet** | $3.00 | $15.00 | Balanced choice |
+| **Gemini 3.0 Pro** | $1.25 | $5.00 | Best value frontier |
+| **Gemini 3 Flash** | $0.05 | $0.20 | RAG-at-scale winner |
+| **o4-mini** | $0.10 | $0.40 | Logic-on-a-budget |
 
 ### Cost Comparison Example
 
-| Volume | GPT-4o | GPT-4o-mini | Claude Sonnet | Gemini Pro |
-|--------|--------|-------------|---------------|------------|
-| 10K queries/mo | $125 | $7.50 | $180 | $62.50 |
-| 100K queries/mo | $1,250 | $75 | $1,800 | $625 |
-| 1M queries/mo | $12,500 | $750 | $18,000 | $6,250 |
+Assume 1M queries/month, 1K input tokens + 500 output tokens per query:
 
-*Assumes 1K input tokens + 500 output tokens per query*
+| Volume | GPT-5.2 | Claude Sonnet | Gemini 3 Pro | Gemini 3 Flash |
+|--------|---------|---------------|--------------|----------------|
+| 10K queries/mo | $150 | $105 | $37.50 | $1.50 |
+| 1M queries/mo | $15,000 | $10,500 | $3,750 | $150 |
+
+*2025 Insight: Gemini 3 Flash has effectively commoditized RAG, making long-context processing cheaper than traditional vector search infra at scale.*
 
 ---
 

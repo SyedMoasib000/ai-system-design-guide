@@ -53,43 +53,40 @@ Committed (1-year): $2.00 / 1M input tokens (20% savings)
 
 ## Current API Pricing
 
-### December 2025 Pricing (Verify Current Values)
+### December 2025 Pricing ⚠️
+
+*Verify current values: Pricing in late 2025 has shifted toward 'Inference-time Scaling' (Thinking tokens).*
 
 #### OpenAI
+| Model | Input / 1M | Output / 1M | Thinking Tier |
+|-------|------------|-------------|---------------|
+| **GPT-5.2** | $5.00 | $20.00 | Included |
+| **o3** | $15.00 | $60.00 | High-compute |
+| **GPT-5.2-mini**| $0.10 | $0.40 | None |
+| **o4-mini** | $0.15 | $0.60 | Low-compute |
 
-| Model | Input / 1M tokens | Output / 1M tokens |
-|-------|-------------------|-------------------|
-| GPT-4o | $2.50 | $10.00 |
-| GPT-4o-mini | $0.15 | $0.60 |
-| GPT-4 Turbo | $10.00 | $30.00 |
-| o1-preview | $15.00 | $60.00 |
-| o1-mini | $3.00 | $12.00 |
+#### Anthropic (The "Claude 4" Generation)
+| Model | Input / 1M | Output / 1M | Reasoning |
+|-------|------------|-------------|-----------|
+| **Claude 4.5 Opus** | $15.00 | $75.00 | Native SoTA |
+| **Claude 3.7 Sonnet**| $3.00 | $15.00 | Hybrid (CoT) |
+| **Claude 4.5 Haiku** | $0.20 | $1.00 | None |
 
-#### Anthropic
+#### Google (The "Gemini 3" Generation)
+| Model | Input / 1M | Output / 1M | Context |
+|-------|------------|-------------|---------|
+| **Gemini 3.0 Pro** | $1.25 | $5.00 | 2.5M tokens |
+| **Gemini 3 Flash** | $0.05 | $0.20 | 1M tokens |
 
-| Model | Input / 1M tokens | Output / 1M tokens |
-|-------|-------------------|-------------------|
-| Claude 3.5 Sonnet | $3.00 | $15.00 |
-| Claude 3.5 Haiku | $0.25 | $1.25 |
-| Claude 3 Opus | $15.00 | $75.00 |
+#### Embedding Models (Dec 2025)
+| Model | Cost / 1M tokens | Dimension |
+|-------|------------------|-----------|
+| **text-embedding-4** | $0.10 | 4096 |
+| **Voyage-3** | $0.06 | 1024 |
+| **Cohere embed-v4** | $0.10 | 1024 |
 
-#### Google
-
-| Model | Input / 1M tokens | Output / 1M tokens |
-|-------|-------------------|-------------------|
-| Gemini 1.5 Pro | $1.25 | $5.00 |
-| Gemini 1.5 Flash | $0.075 | $0.30 |
-
-#### Embedding Models
-
-| Model | Cost / 1M tokens |
-|-------|------------------|
-| OpenAI text-embedding-3-large | $0.13 |
-| OpenAI text-embedding-3-small | $0.02 |
-| Voyage-3 | $0.06 |
-| Cohere embed-v3 | $0.10 |
-
-*Pricing changes frequently. Always verify with official sources.*
+> [!IMPORTANT]
+> **Inference-time Compute Costs:** For models with "Thinking" or "Reasoning" modes (o1, o3, Claude 3.7), you are often charged for **internal thinking tokens** even if they are not shown to the user. This can increase total request cost by 3x-10x for logic-heavy tasks.
 
 ---
 

@@ -44,89 +44,59 @@ customers' questions about our product documentation?"
 
 ## Evaluation Dimensions
 
-### Dimension 1: Task Performance
+### Dimension 1: Task Performance (Dec 2025)
 
-How well does the model perform your specific task?
+| Task Type | Evaluation Approach | Key Metric |
+|-----------|---------------------|------------|
+| **Autonomous Coding** | CWE/SWE-bench (Verified) | % issues resolved autonomously |
+| **Long-Horizon Planning** | Agentic Loop testing | Success rate on 10+ step plans |
+| **Reasoning Depth** | Thinking mode analysis | Logic consistency across CoT steps |
+| **Long Context RAG** | Needle-in-a-Haystack (2M+) | Recall efficiency at scale |
+| **Native Multimodal** | Interleaved Vision/Voice/Text | Sync accuracy across modalities |
 
-| Task Type | Evaluation Approach |
-|-----------|---------------------|
-| Q&A | Answer correctness vs ground truth |
-| Summarization | Factual consistency, coverage, conciseness |
-| Classification | Accuracy, precision, recall, F1 |
-| Generation | Human preference, automated metrics |
-| Code | Execution pass rate, test coverage |
-| Extraction | Field accuracy, completeness |
+### Dimension 2: Agentic Mastery
 
-### Dimension 2: Instruction Following
-
-Does the model follow your constraints?
+How well does the model use tools and follow multi-step instructions?
 
 ```python
-def evaluate_instruction_following(model, test_cases):
+def evaluate_agentic_flow(agent, task_environment):
+    """
+    Measure success on 'Autonomous Agent' tasks:
+    1. Plan generation
+    2. Tool selection accuracy
+    3. Error recovery
+    4. Feedback loop utilization
+    """
     results = []
-    for case in test_cases:
-        response = model.generate(case.prompt)
-        
-        checks = {
-            "format_correct": check_format(response, case.expected_format),
-            "length_constraint": check_length(response, case.max_length),
-            "includes_required": check_required_elements(response, case.required),
-            "excludes_forbidden": check_forbidden(response, case.forbidden)
-        }
-        
-        results.append(all(checks.values()))
-    
-    return sum(results) / len(results)
+    for scenario in task_environment.scenarios:
+        traj = agent.run(scenario.goal)
+        results.append({
+            "success": traj.reached_goal,
+            "steps": len(traj.steps),
+            "tool_errors": traj.count_invalid_tool_calls()
+        })
+    return aggregate(results)
 ```
 
-**Common instruction following tests:**
-- Output in specific format (JSON, bullet points)
-- Length constraints (max words, sentences)
-- Include/exclude specific content
-- Tone and style requirements
+### Dimension 3: Reasoning Reliability
 
-### Dimension 3: Robustness
+Does the "Thinking" mode improve output accuracy vs standard generation?
 
-Does the model handle edge cases gracefully?
+| Mode | Accuracy (Math) | Accuracy (Code) | Avg Latency |
+|------|-----------------|-----------------|-------------|
+| **Standard** | 72% | 68% | 1.2s |
+| **Thinking** | 94% | 89% | 12.5s |
+| **Hybrid** | Variable | Variable | User-defined |
 
-| Edge Case | Test |
-|-----------|------|
-| Ambiguous input | Does it ask for clarification or make reasonable assumptions? |
-| Incomplete context | Does it acknowledge limitations? |
-| Adversarial input | Does it resist manipulation? |
-| Out-of-domain | Does it recognize when it should not answer? |
-| Long input | Does quality degrade with length? |
+### Dimension 4: Context Recall (Dec 2025)
 
-### Dimension 4: Consistency
+With 2M+ context windows, simple "needle-in-a-haystack" is no longer enough. We now measure **Contextual Reasoning** across the window.
 
-Does the model give consistent answers?
-
-```python
-def evaluate_consistency(model, queries, runs_per_query=5):
-    consistency_scores = []
-    
-    for query in queries:
-        responses = [model.generate(query) for _ in range(runs_per_query)]
-        
-        # Measure semantic similarity between responses
-        embeddings = [embed(r) for r in responses]
-        avg_similarity = mean_pairwise_cosine(embeddings)
-        
-        consistency_scores.append(avg_similarity)
-    
-    return mean(consistency_scores)
-```
-
-### Dimension 5: Latency and Throughput
-
-Production-relevant performance metrics:
-
-| Metric | Target Range | Measurement |
-|--------|--------------|-------------|
-| TTFT | 100-500ms | Time to first token |
-| TPS | 30-100 | Tokens per second |
-| P99 latency | 2-5s | Tail latency |
-| Throughput | Varies | Requests per second |
+| Metric | Measurement | Target |
+|--------|-------------|--------|
+| **Window Recall** | Factual recall at 90% window depth | > 98% |
+| **Cross-Doc Reasoning** | Logic linking Doc A (pos 10k) to Doc B (pos 1M) | > 90% |
+| **Contextual Noise Resistance** | Accuracy when 90% of window is irrelevant "filler" | > 95% |
 
 ---
 
