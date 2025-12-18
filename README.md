@@ -40,7 +40,7 @@ ai-system-design-guide/
 ├── 00-interview-prep/           # Questions, frameworks, exercises (start here!)
 ├── 01-foundations/              # LLM internals, tokenization, attention, embeddings
 ├── 02-model-landscape/          # Model comparison, selection frameworks
-├── 03-fine-tuning/              # When to fine-tune, LoRA, techniques
+├── 03-training-and-adaptation/  # Pretraining, fine-tuning, PEFT, alignment
 ├── 04-inference-optimization/   # KV cache, batching, serving infrastructure
 ├── 05-prompting-and-context/    # Prompt engineering, CoT, structured output
 ├── 06-retrieval-systems/        # RAG, chunking, vector DBs, reranking
@@ -64,7 +64,7 @@ ai-system-design-guide/
 | 00 Interview Prep | Preparation | Questions, frameworks, whiteboard exercises |
 | 01 Foundations | LLM Internals | Transformers, attention, tokenization, embeddings |
 | 02 Model Landscape | Model Selection | Frontier models, SLMs, multimodal, reasoning models |
-| 03 Fine-Tuning | Model Adaptation | When to fine-tune, LoRA/QLoRA, techniques |
+| 03 Training & Adaptation | Model Optimization | Pretraining, fine-tuning, PEFT, alignment, synthetic data |
 | 04 Inference | Performance | KV cache, serving architecture, batching |
 | 05 Prompting | Input Engineering | CoT, structured output, prompt optimization |
 | 06 Retrieval | RAG Systems | Chunking, embeddings, vector DBs, hybrid search |
