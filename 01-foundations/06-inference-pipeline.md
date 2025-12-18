@@ -8,8 +8,11 @@ This chapter covers how LLMs generate text at inference time, the computational 
 - [Prefill and Decode Phases](#prefill-and-decode-phases)
 - [Sampling Strategies](#sampling-strategies)
 - [Stopping Conditions](#stopping-conditions)
-- [Latency Metrics](#latency-metrics)
+- [Latent Optimization: Speculative Decoding](#speculative-decoding)
+- [Latency Metrics & TTFT vs. TPS](#latency-metrics)
 - [Memory and Compute Requirements](#memory-and-compute-requirements)
+- [Continuous Batching & Prefix Caching](#continuous-batching-and-prefix-caching)
+- [Multi-LoRA Serving](#multi-lora-serving)
 - [Streaming](#streaming)
 - [Production Considerations](#production-considerations)
 - [Interview Questions](#interview-questions)
@@ -253,10 +256,23 @@ for seq in stop_sequences:
         break
 ```
 
-**Common patterns:**
-- Chat: Stop at next speaker tag
-- Code: Stop at function end
-- Structured: Stop at delimiter
+## Latent Optimization: Speculative Decoding
+
+**The 2025 standard for high-bandwidth serving.**
+
+Speculative decoding uses a smaller "draft model" to predict multiple future tokens in a single step, which the larger "target model" then verifies in parallel.
+
+```
+Draft Model (Small): Predicts 5 tokens -> "The", "quick", "brown", "fox", "jumps"
+Target Model (Large): Verifies all 5 tokens in ONE forward pass.
+Result: If target agrees on 4 tokens, we've generated 4 tokens for the cost of 1 large forward pass.
+```
+
+| Method | Approach | Speedup | Example |
+|--------|----------|---------|---------|
+| Draft Model | Small model (e.g., 1B) + Large (70B) | 2x-3x | vLLM, TGI |
+| **Medusa Heads** | Multiple LM heads on the same model | 1.5x-2x | Medusa, Eagle |
+| Prompt Lookup | Uses substrings from prompt as speculation| 1.2x | RAG / Code completion |
 
 ---
 
@@ -433,10 +449,26 @@ batch = collect_requests(timeout=10ms, max_batch=32)
 responses = model.generate_batch(batch)
 ```
 
-**Continuous batching (vLLM style):**
-- Add requests to batch as they arrive
-- Remove completed requests immediately
-- Fill slots with new requests
+### Continuous Batching and Prefix Caching
+
+**Continuous Batching (Iteration-level Scheduling):**
+Unlike static batching, continuous batching injects new requests as soon as any request in the batch hits an EOS token. This increases throughput by up to 20x.
+
+**Prefix Caching (RAD-O):**
+Caches the KV tensors of common prefixes (e.g., system prompts, few-shot examples).
+- **TTFT Reduction**: 90%
+- **Mechanism**: Use a hash of the prefix to lookup KV tensors in a GPU-memory LRU cache.
+
+### Multi-LoRA Serving
+
+**Scenario:** Serving 1000 different fine-tuned models (adapters) on one base model.
+**The Challenge:** Loading 1000 separate models would take terabytes of VRAM.
+
+**The Solution (LoRAX / S-LoRA):**
+1. Load one base model in VRAM.
+2. Store LoRA adapters (megabytes) in host RAM or SSD.
+3. Dynamically swap adapters during the forward pass based on the request ID.
+4. **Implementation**: Use a specialized kernel (S-LoRA) that performs matrix-vector multiplication for multiple different adapters in the same batch.
 
 ### Request Prioritization
 

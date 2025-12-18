@@ -116,17 +116,13 @@ Used by T5, ALBERT, some multilingual models.
 | Size | Example | Pros | Cons |
 |------|---------|------|------|
 | Small (10K) | Some early models | Smaller embeddings | Long token sequences |
-| Medium (32K) | GPT-2, Llama | Good balance | Most common |
-| Large (50K+) | GPT-4 (100K), Claude | Short sequences | Larger embeddings, rare tokens undertrained |
+| Medium (32K) | Llama 2 | Good balance | Multilingual inefficiency |
+| Large (128K) | Llama 3/4, GPT-4o | **Standard in late 2025**. High compression ratio. | Larger embeddings table |
+| Huge (200K+) | GPT-5.2 (o200k) | Native multimodal & multilingual efficiency | Memory pressure at the LM Head |
 
-**Impact of vocabulary size:**
-```
-Larger vocabulary:
-- Pro: Fewer tokens per text (shorter sequences)
-- Pro: More efficient for common text
-- Con: Larger embedding table (vocab_size * d_model bytes)
-- Con: Rare tokens have poor representations
-```
+**The 2025 Vocab Expansion (Deep Dive):**
+- **Llama 3/4 (128k)**: By moving from 32k to 128k, Meta improved English compression by ~15% and non-English languages like Hindi by 3-4x. 
+- **GPT-4o/5.2 (o200k_base)**: Tiktoken's latest encoding provides superior compression for code and multilingual text, reducing API costs indirectly by using fewer tokens for the same meaning.
 
 ### Character vs Subword vs Word
 
@@ -223,16 +219,27 @@ Tokenizers trained primarily on English have poor efficiency for other languages
 - GPT-4, Claude 3.5: Large vocabulary with multilingual coverage
 - Gemini: Designed for multilingual from the start
 
-### Tokenization Efficiency by Model
-
-Relative token count for same semantic content (English = 1.0):
-
-| Model | Chinese | Japanese | Korean | Arabic |
+| Model | Chinese | Japanese | Korean | Hindi |
 |-------|---------|----------|--------|--------|
-| GPT-2 | 2.5x | 3.0x | 2.8x | 2.2x |
-| GPT-4 | 1.4x | 1.6x | 1.5x | 1.3x |
-| Claude 3 | 1.3x | 1.5x | 1.4x | 1.3x |
-| Gemini | 1.2x | 1.4x | 1.3x | 1.2x |
+| GPT-2 | 2.5x | 3.0x | 2.8x | 6.0x |
+| GPT-4 (cl100k) | 1.4x | 1.6x | 1.5x | 3.2x |
+| GPT-5 (o200k) | 1.1x | 1.2x | 1.1x | 1.4x |
+| Llama 3/4 (128k)| 1.2x | 1.3x | 1.2x | 1.5x |
+
+---
+
+## Multimodal Tokenization (pixels-to-tokens)
+
+Modern native multimodal models do not just "see" images; they tokenize them.
+
+### Image Tokenization (Vision Transformers)
+Images are split into patches (e.g., 14x14 pixels). Each patch is passed through a vision encoder (like SigLIP) to produce a single visual token.
+- **Fixed Token Cost**: Most models use a fixed number of tokens per image at a specific resolution (e.g., 256 or 729 tokens per image).
+- **Dynamic Resolution**: Some models (Gemini 3) use a variable number of tokens depending on image aspect ratio and detail level.
+
+### Audio/Video Tokenization
+- **Audio**: Compressed into discrete units using codecs like EnCodec, then represented as a sequence of audio tokens.
+- **Video**: Treated as a sequence of image frames (temporal tokenization). A 1-second video @ 1FPS might cost as much as 1 high-res image.
 
 ---
 

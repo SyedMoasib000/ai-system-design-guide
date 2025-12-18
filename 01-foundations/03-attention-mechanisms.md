@@ -9,8 +9,9 @@ Attention is the core innovation that enables transformers. This chapter covers 
 - [Multi-Head Attention](#multi-head-attention)
 - [Attention Patterns](#attention-patterns)
 - [Efficient Attention Variants](#efficient-attention-variants)
-- [Flash Attention](#flash-attention)
-- [KV Cache Optimizations](#kv-cache-optimizations)
+- [Flash Attention (v2 & v3)](#flash-attention)
+- [Multi-head Latent Attention (MLA)](#multi-head-latent-attention-mla)
+- [KV Cache Optimizations & Context Caching](#kv-cache-optimizations)
 - [Practical Implications](#practical-implications)
 - [Interview Questions](#interview-questions)
 - [References](#references)
@@ -296,51 +297,50 @@ Flash:    Q, K -> Tiles (block_size x block_size) -> Incremental Output
 
 ### Performance Impact
 
-| Metric | Standard | Flash Attention v2 |
-|--------|----------|-------------------|
-| Memory | O(n^2) | O(n) |
-| Speed | Baseline | 2-4x faster |
-| Max context | Limited by GPU memory | Much longer |
+### FlashAttention-2 (Work Partitioning)
+Optimized for A100/H100 by improving parallelism across heads and sequence length.
 
-### Using Flash Attention
-
-```python
-# PyTorch 2.0+ has built-in support
-import torch
-import torch.nn.functional as F
-
-# Enable Flash Attention
-with torch.backends.cuda.sdp_kernel(
-    enable_flash=True,
-    enable_math=False,
-    enable_mem_efficient=False
-):
-    output = F.scaled_dot_product_attention(q, k, v)
-
-# Or use Flash Attention library directly
-from flash_attn import flash_attn_func
-output = flash_attn_func(q, k, v, causal=True)
-```
+### FlashAttention-3 (FP8 & H100 Optimization)
+**The 2025 Standard for H100/B200 Clusters:**
+- **Asynchronous Execution**: Overlaps GEMM (matrix mult) and softmax operations using TMA (Tensor Memory Accelerator) on H100.
+- **FP8 Support**: Native support for FP8 precision, doubling throughput compared to FP16 while maintaining attention accuracy via stochastic rounding.
+- **Speedup**: ~1.5x-2.0x faster than FlashAttention-2 for long context prefill.
 
 ---
 
-## KV Cache Optimizations
+## Multi-head Latent Attention (MLA)
 
-During autoregressive generation, the KV cache stores Key and Value tensors from previous positions.
+Introduced by DeepSeek (V2/V3), **MLA is the modern alternative to GQA** for extreme KV cache pressure.
 
-### The Problem
-
-KV cache grows linearly with sequence length:
+Instead of just grouping heads, MLA compresses the Key and Value vectors into a **low-dimensional latent space** before storing them in the cache.
 
 ```
-KV cache size = 2 * num_layers * num_heads * head_dim * seq_len * bytes
-
-Llama 2 70B at 8K context:
-= 2 * 80 * 64 * 128 * 8192 * 2 bytes
-= 21.5 GB per request
+Query (Up-projected) ────────┐
+                             ▼
+Key, Value (Down-projected) ─▶ [Low-dim Latent Cache] ─▶ [Output]
+                             ▲
+                             └─ Projection Matrices
 ```
 
-This limits batch sizes and concurrent requests.
+| Metric | MHA | GQA | MLA (Dec 2025) |
+|--------|-----|-----|----------------|
+| KV Cache Size | 100% | 12.5% | **~5%** |
+| Quality | Baseline | Near-Baseline | **Superior to GQA** |
+| Latency | Baseline | Faster | **Fastest (Reduced I/O)** |
+
+**Why MLA wins**: It uses "Decoupled Rotary Positional Embeddings" which allow the compressed latent KV to be reused without decoding, saving massive memory bandwidth during long-context generation.
+
+---
+
+## KV Cache Optimizations & Context Caching
+
+### Context Caching (System-level)
+API providers (OpenAI, Gemini, Anthropic) now offer **Context Caching**. 
+- **How it works**: Pre-computes and stores the KV tensors for a long "prefix" (e.g., a 100k token law book).
+- **Benefit**: Reduces TTFT (Time to First Token) by 90% and cost by 50-90% for repeated prefixes.
+
+### Sliding Window Attention (SWA)
+Used in Mistral/Gemma models to limit the attention depth to a fixed window (e.g., 4096 tokens), preventing the KV cache from growing indefinitely.
 
 ### Multi-Query Attention (MQA)
 

@@ -10,8 +10,9 @@ Embeddings are dense vector representations of text that capture semantic meanin
 - [Distance Metrics](#distance-metrics)
 - [Embedding Model Comparison](#embedding-model-comparison)
 - [Matryoshka and Adaptive Dimensions](#matryoshka-and-adaptive-dimensions)
-- [Late Interaction Models](#late-interaction-models)
-- [Practical Considerations](#practical-considerations)
+- [Late Interaction vs. Late Chunking](#late-chunking-and-interaction)
+- [Binary and Scalar Quantization](#quantization-for-scale)
+- [Practical Considerations (Batching, Caching)](#practical-considerations)
 - [Embedding Drift and Versioning](#embedding-drift-and-versioning)
 - [Interview Questions](#interview-questions)
 - [References](#references)
@@ -212,12 +213,12 @@ def euclidean_distance(a, b):
 
 | Model | Dimensions | Max Tokens | MTEB Retrieval | Cost / 1M tokens |
 |-------|------------|------------|----------------|------------------|
-| OpenAI text-embedding-3-large | 3072 | 8191 | 64.6 | $0.13 |
-| OpenAI text-embedding-3-small | 1536 | 8191 | 62.3 | $0.02 |
-| Voyage-3 | 1024 | 32000 | 67.8 | $0.06 |
-| Voyage-3-lite | 512 | 32000 | 64.2 | $0.02 |
-| Cohere embed-v3 multilingual | 1024 | 512 | 66.4 | $0.10 |
-| Google text-embedding-004 | 768 | 2048 | 66.1 | $0.025 |
+| OpenAI text-embedding-4 | 3072 | 16k | 68.2 | $0.10 |
+| Voyage-4 | 1024 | 128k | 70.1 | $0.05 |
+| Cohere embed-v3.5 | 1024 | 512 | 67.5 | $0.10 |
+| Google text-embedding-005 | 768 | 8k | 67.2 | $0.02 |
+
+*MTEB scores represent late 2025 frontier standards.*
 
 *MTEB scores are approximate and vary by benchmark subset. Always verify current values.*
 
@@ -263,10 +264,10 @@ dim_64 = full_embedding[:64]
 
 | Use Case | Dimension | Tradeoff |
 |----------|-----------|----------|
-| Production retrieval | 1024 | Full quality |
-| Cost-sensitive | 256 | 8x storage savings, ~5% quality loss |
-| Edge deployment | 64 | 16x savings, usable quality |
-| Two-stage | 256 first, 1024 rerank | Speed + quality |
+| Full Retrieval | 1024-3072 | Peak Accuracy |
+| **Two-Stage Retrieval**| 128 -> 1024 | **The 2025 Standard**: Retrieve 1000 with 128-d, refine top 100 with 1024-d. |
+| Cost-sensitive | 256 | 12x storage savings, <2% MRR loss |
+| Edge / Mobile | 64 | Maximum speed, handles simple intent |
 
 ### Models with Matryoshka Support
 
@@ -290,28 +291,32 @@ response = client.embeddings.create(
 
 ---
 
-## Late Interaction Models
+### Late Chunking (The 2025 Shift)
 
-### ColBERT Architecture
+**Traditional Chunking:**
+`Document -> Split into chunks -> Embed chunks individually`
+- **Issue**: Chunk 2 loses the context from Chunk 1.
 
-Instead of single embedding per document, ColBERT keeps per-token embeddings:
+**Late Chunking (introduced by Jina AI/Voyage):**
+`Full Document -> Model Encoder -> Token-level Embeddings -> Pool into chunk boundaries`
+- **Benefit**: Each chunk's embedding contains information from the **entire document** because the transformer's self-attention was applied to the full sequence before pooling.
+- **Requirement**: A model with long-context support (at least 8k+ tokens).
 
-```
-Query:    "What is RAG?" -> [e_what, e_is, e_RAG, e_?]
-Document: "RAG combines..." -> [e_RAG, e_combines, ...]
+---
 
-Similarity = MaxSim(query_tokens, doc_tokens)
-           = sum(max(similarity with each doc token) for each query token)
-```
+## Quantization for Scale
 
-### Properties
+To handle billions of vectors, **Binary** and **Scalar (Int8)** quantization are now standard.
 
-| Aspect | Bi-Encoder | ColBERT |
-|--------|------------|---------|
-| Index size | 1 vector per doc | n vectors per doc |
-| Retrieval quality | Good | Better |
-| Index storage | Low | High (10-100x) |
-| Query latency | Fast | Slightly slower |
+| Type | Data Size | Memory Savings | Quality Loss | Supported By |
+|------|-----------|----------------|--------------|--------------|
+| Float32 | 4 bytes/dim | Baseline | 0% | All |
+| Int8 | 1 byte/dim | 4x | <1% | Cohere, BGE |
+| **Binary** | **1 bit/dim** | **32x** | ~5-10% | Cohere v3, v4 |
+
+**Binary Quantization Pattern:**
+1. Retrieve top 1000 using Binary embeddings (extreme speed).
+2. Rerank top 50 using Float32 or a Cross-Encoder (peak accuracy).
 
 ### When to Use ColBERT
 

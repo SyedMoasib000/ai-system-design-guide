@@ -8,7 +8,8 @@ This chapter provides a comprehensive view of the complete transformer architect
 - [Input Processing](#input-processing)
 - [The Transformer Block](#the-transformer-block)
 - [Output Processing](#output-processing)
-- [Modern Architecture Variations](#modern-architecture-variations)
+- [Modern Architecture Variations (Hybrid MoE, MLA)](#mixture-of-experts-moe--hybrid-architectures)
+- [Untied vs. Tied Embeddings](#untied-vs-tied-embeddings)
 - [Scaling Properties](#scaling-properties)
 - [Architecture Comparison Table](#architecture-comparison-table)
 - [Interview Questions](#interview-questions)
@@ -257,11 +258,17 @@ class LMHead(nn.Module):
         return self.linear(x)  # Returns logits
 ```
 
-**Weight tying:** Many models share weights between input embeddings and output projection. This reduces parameters and improves training.
+## Untied vs. Tied Embeddings
 
-```python
-lm_head.linear.weight = embedding.weight  # Tied weights
-```
+**Standard Pattern (GPT-3, Llama 2):** Weight Tying
+- Output head shares weights with input embeddings.
+- **Pro**: Saves memory (vocab_size * hidden_dim).
+- **Con**: Forces input and output latent spaces to be identical, which can be suboptimal.
+
+**2025 Frontier Pattern (Llama 3/4, GPT-5):** Untied Embeddings
+- Output head has its own weights.
+- **Why?**: Larger vocabularies (128k+) make the embedding table a significant portion of the model. Untying allows the output head to specialize in "predictive logic" while input embeddings focus on "semantic understanding."
+- **System Impact**: Increases parameter count but often improves perplexity for multilingual and code tasks.
 
 ### Getting Predictions
 
@@ -295,12 +302,15 @@ Same as Llama but adds:
 - **Sliding Window Attention:** Each layer only attends to 4K tokens
 - Still achieves effective 32K+ context via stacking
 
-### GPT-4 Architecture (Speculated)
+### Mixture of Experts (MoE) & Hybrid Architectures
 
-Believed to be Mixture of Experts (MoE):
-- Multiple expert FFNs per layer
-- Router selects which experts process each token
-- Enables larger effective capacity with manageable compute
+State-of-the-art models in 2025 often use **Hybrid MoE/Dense** blocks:
+- **Periodic Dense Layers**: Every few MoE layers, a dense layer is added to ensure "global" knowledge is shared across all experts.
+- **Expert Parallelism**: Distributing different experts across different GPUs. This makes **inter-node bandwidth** (NVLink/InfiniBand) a primary architecture bottleneck.
+
+### Multi-head Latent Attention (MLA) Integration
+The standard attention block in [DeepSeek-V3](file:///Users/om/play/ai-system-design-guide/01-foundations/03-attention-mechanisms.md#multi-head-latent-attention-mla) and equivalent 2025 architectures replaces the standard Q/K/V projects with low-rank latent compressions.
+- **Architectural Shift**: The "KV Cache" is now a compressed latent representation, changing the memory/compute ratio of the entire transformer block.
 
 ### Comparison of Choices
 
@@ -356,12 +366,10 @@ For a 70B model, train on ~1.4T tokens for compute-optimal training.
 | Model | Params | Layers | d_model | Heads | KV Heads | FFN | Context |
 |-------|--------|--------|---------|-------|----------|-----|---------|
 | GPT-3 | 175B | 96 | 12288 | 96 | 96 | GELU | 2K |
-| Llama 2 7B | 7B | 32 | 4096 | 32 | 32 | SwiGLU | 4K |
 | Llama 2 70B | 70B | 80 | 8192 | 64 | 8 | SwiGLU | 4K |
-| Llama 3 8B | 8B | 32 | 4096 | 32 | 8 | SwiGLU | 8K |
-| Llama 3 70B | 70B | 80 | 8192 | 64 | 8 | SwiGLU | 8K |
-| Mistral 7B | 7B | 32 | 4096 | 32 | 8 | SwiGLU | 32K* |
-| Mixtral 8x7B | 47B | 32 | 4096 | 32 | 8 | MoE | 32K |
+| Llama 3 405B| 405B | 126 | 16384 | 128 | 16 | SwiGLU | 128K |
+| DeepSeek V3 | 671B | 128 | 7168 | 128 | MLA | MoE | 128K |
+| Llama 4 (spec)| 1T+ | 140+ | 18432 | 192 | 24 | MoE/H | 1M+ |
 
 *Mistral uses sliding window attention for effective long context.
 

@@ -6,6 +6,9 @@ This chapter covers the core concepts behind large language models. Understandin
 
 - [The Transformer Revolution](#the-transformer-revolution)
 - [Architecture Variants](#architecture-variants)
+- [Mixture of Experts (MoE)](#mixture-of-experts-moe)
+- [Scaling Laws: Training vs. Inference Optimal](#scaling-laws-training-vs-inference-optimal)
+- [Native Multimodality](#native-multimodality)
 - [Self-Attention Mechanism](#self-attention-mechanism)
 - [Multi-Head Attention](#multi-head-attention)
 - [Position Encodings](#position-encodings)
@@ -79,14 +82,63 @@ Uses bidirectional attention. Each token sees all other tokens. Cannot generate 
 - Backbone for embedding models
 - Smaller, faster for specific tasks
 
-### Encoder-Decoder
+### Encoder-Decoder (The Return of the Encoder)
 
-Separate encoder processes input, decoder generates output while attending to encoder representations.
+While decoder-only dominated for years, late 2025 has seen a return to Encoder-Decoder architectures for specialized **reasoning** and **verification** tasks (e.g., o3 internal verifiers).
 
-**Practical relevance:**
-- Translation (input and output are different sequences)
-- Summarization (long input, short output)
-- Less common for modern LLMs
+---
+
+## Mixture of Experts (MoE)
+
+**The most significant architectural shift in frontier models (GPT-4o, DeepSeek-V3, Mixtral).**
+
+MoE replaces the dense Feed-Forward Network (FFN) with multiple "experts" and a "router" that selects which experts process a given token.
+
+```
+┌─────────────────────────────────────────────────────┐
+│                 MoE Layer (Decoder)                 │
+│  ┌───────────────────────────────────────────────┐  │
+│  │               Attention Layer                 │  │
+│  └───────────────────────────────────────────────┘  │
+│                         │                           │
+│                 ┌───────▼───────┐                   │
+│                 │     Router    │                   │
+│                 └─┬───┬───┬───┬─┘                   │
+│          ┌────────┘   │   │   └────────┐            │
+│          ▼            ▼   ▼            ▼            │
+│   ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐│
+│   │ Expert 1 │ │ Expert 2 │ │ Expert 3 │ │ Expert N ││
+│   └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘│
+│        └────────────┴───┬───┴────────────┘        │
+└─────────────────────────▼───────────────────────────┘
+```
+
+### Key MoE Nuances for System Design:
+1. **Total vs. Active Parameters**: A 1.2T parameter MoE model (like GPT-4o rumored) might only use 100B parameters per token. 
+    - **Memory constraint**: You must store all 1.2T parameters (high VRAM).
+    - **Compute constraint**: You only pay for 100B params of FLOPs (faster latency).
+2. **Routing Collapse**: If the router only picks one expert, the others don't learn. Modern models use **load balancing loss** and **auxiliary losses** to ensure all experts are utilized.
+3. **DeepSeek-V3 Refinements**: Introduced **Multi-head Latent Attention (MLA)** and **Auxiliary-loss-free load balancing**, setting the 2025 standard for efficiency.
+
+---
+
+## Scaling Laws: Training vs. Inference Optimal
+
+The original Chinchilla laws (2022) focused on being **Training-Optimal**: finding the best model size for a given training budget.
+
+In late 2025, the industry has shifted to **Inference-Optimal** scaling:
+- **Over-training**: Training smaller models (e.g., Llama 3 8B) on massive data (15T+ tokens) far beyond the Chinchilla point.
+- **Why?**: The cost of inference over millions of users dwarfs the one-time training cost. A 7B model trained for 10x longer is cheaper to serve than a 70B model trained at the Chinchilla point.
+
+---
+
+## Native Multimodality
+
+Older models used **Vision Adapters** (connecting a frozen CLIP-style vision encoder to an LLM). Frontier models (GPT-5.2, Gemini 3) are **Native Multimodal**.
+
+- **Shared Vocabulary**: Visual tokens and text tokens exist in the same latent space.
+- **Uniform Transformer**: The same blocks process both pixels and text.
+- **Benefit**: Much better spatial reasoning and "world model" understanding compared to adapter-based approaches.
 
 ---
 
