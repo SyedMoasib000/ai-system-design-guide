@@ -117,16 +117,19 @@ A financial services company wants to build an AI-powered search system for thei
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Technology Choices
+### Technology Choices (Dec 2025 Update)
 
 | Component | Choice | Rationale |
 |-----------|--------|-----------|
-| Vector DB | Qdrant | Self-hosted, good filtering, scales well |
-| Search | Elasticsearch | Existing infrastructure, BM25 |
-| LLM | Claude 3.5 Sonnet | Quality, 200K context, on-prem option |
-| Embeddings | text-embedding-3-large | Best quality, reasonable cost |
-| Reranker | Cohere Rerank | High quality, simple API |
-| Storage | S3 + PostgreSQL | Document storage + metadata |
+| **Primary LLM** | Gemini 3.0 Pro | **2.5M context** natively handles 100+ documents without fragmentation |
+| **Agentic LLM** | GPT-5.2 | Industry-leading tool-use accuracy for complex cross-doc analysis |
+| **Retriever** | Gemini 3 Flash | Low-cost retrieval over massive context windows |
+| **Embeddings** | text-embedding-3-large | Proven quality and cost-efficient |
+| **Vector DB** | Qdrant (Self-hosted) | Performance, filtering, and on-prem compliance |
+| **Reranker** | BGE-Reranker-v2-X | Open-source SoTA for on-prem isolation |
+
+> [!NOTE]
+> **Shift in 2025:** We've moved from "Small Chunk RAG" to **"Balanced Context RAG"**. With 2.5M contexts, we no longer need to find the "perfect 512-token chunk." We retrieve entire document segments (10k-50k tokens) and let the model's native attention handle the needle.
 
 ---
 
@@ -335,55 +338,45 @@ class HybridRetriever:
         return [docs[id] for id in sorted_ids]
 ```
 
-### Generation with Citations
+### Generation with Massive Context (Dec 2025)
 
 ```python
-class LLMGenerator:
+class GeminiGenerator:
     def __init__(self):
-        self.client = Anthropic()
+        self.client = genai.GenerativeModel("gemini-3.0-pro")
     
     async def generate(
         self,
         query: str,
-        context: str,
+        context_docs: list[Document],
         conversation_history: list[Message] = None
     ) -> str:
+        # 2.5M context allows passing ENTIRE documents, not just snippets
+        system_instruction = """
+        You are an enterprise knowledge assistant. 
+        Analyze the provided documents to answer the query accurately.
+        Cite every claim using [[DocName:PageNumber]] format.
+        """
         
-        system_prompt = """You are an enterprise knowledge assistant for a financial services company.
-
-RULES:
-1. Answer questions based ONLY on the provided context
-2. If the answer is not in the context, say "I don't have information about that in my sources"
-3. Always cite your sources using [Source: document_name] format
-4. Be concise but complete
-5. For complex topics, structure your answer with clear sections
-6. Never make up information not in the context
-
-CONTEXT:
-{context}
-"""
+        contents = [{"text": doc.text} for doc in context_docs]
+        contents.append({"text": f"User Query: {query}"})
         
-        messages = []
-        
-        # Add conversation history
-        if conversation_history:
-            for msg in conversation_history[-6:]:  # Last 3 turns
-                messages.append({
-                    "role": msg.role,
-                    "content": msg.content
-                })
-        
-        messages.append({"role": "user", "content": query})
-        
-        response = await self.client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=1024,
-            system=system_prompt.format(context=context),
-            messages=messages
+        response = await self.client.generate_content_async(
+            contents,
+            generation_config=genai.types.GenerationConfig(temperature=0.0)
         )
-        
-        return response.content[0].text
+        return response.text
 ```
+
+> [!TIP]
+> **Production Choice vs. Bleeding Edge**
+> While Gemini 3.0 Pro offers 2.5M context, many production systems as of late 2025 still use **Claude 3.5 Sonnet** or **GPT-4o** as their primary generators. 
+> 
+> **Why?**
+> - **Maturity**: 12+ months of production track record.
+> - **Predictability**: Known latency patterns and fewer "hallucination spikes" on long-tail requests.
+> - **SDK Stability**: Deep integration with frameworks like LangGraph and LlamaIndex.
+> - **Cost**: Optimized pricing for high-volume standard RAG.
 
 ---
 

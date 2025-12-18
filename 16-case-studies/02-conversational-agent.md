@@ -152,149 +152,50 @@ User Message
 
 ## Component Deep Dives
 
-### Intent Classification
+### Intent Classification (Dec 2025)
 
 ```python
 class IntentClassifier:
-    INTENTS = [
-        "billing",
-        "technical_issue",
-        "account_management",
-        "feature_request",
-        "general_question",
-        "escalation_request"
-    ]
-    
     async def classify(self, message: str, history: list[dict]) -> dict:
-        prompt = f"""
-Classify this customer support message into one of these intents:
-{', '.join(self.INTENTS)}
-
-Conversation history:
-{self.format_history(history[-3:])}
-
-Current message: {message}
-
-Return JSON: {{"intent": "...", "confidence": 0.0-1.0, "entities": {{}}}}
-"""
-        
-        result = await self.llm.generate(prompt, response_format="json")
-        return json.loads(result)
+        # Using GPT-5.2-mini for <100ms classification latency
+        result = await client.chat.completions.create(
+            model="gpt-5.2-mini",
+            messages=[{"role": "user", "content": message}],
+            response_format={"type": "json_object"}
+        )
+        return json.loads(result.choices[0].message.content)
 ```
 
-### Knowledge Base (RAG Pipeline)
+### Knowledge Base (Gemini 3 Flash RAG)
 
 ```python
 class SupportKnowledgeBase:
-    def __init__(self):
-        self.sources = {
-            "docs": ProductDocsIndex(),
-            "faqs": FAQIndex(),
-            "tickets": ResolvedTicketsIndex(),
-            "release_notes": ReleaseNotesIndex()
-        }
-    
-    async def retrieve(
-        self,
-        query: str,
-        intent: str,
-        tenant_id: str
-    ) -> list[dict]:
-        # Select sources based on intent
-        if intent == "billing":
-            sources = ["faqs", "docs"]
-        elif intent == "technical_issue":
-            sources = ["docs", "tickets", "release_notes"]
-        else:
-            sources = ["faqs", "docs"]
-        
-        # Parallel retrieval from selected sources
-        results = await asyncio.gather(*[
-            self.sources[s].search(query, tenant_id=tenant_id)
-            for s in sources
-        ])
-        
-        # Merge and rerank
-        all_results = [r for source_results in results for r in source_results]
-        reranked = await self.reranker.rerank(query, all_results)
-        
-        return reranked[:5]
+    async def retrieve(self, query: str, context_window: int = 1_000_000) -> list[dict]:
+        # Using Gemini 3 Flash for massive context retrieval
+        # No more 'reranking' needed for many standard support tasks
+        results = await self.sources.search(query, limit=50) 
+        return results
 ```
 
-### Account Context Service
-
-```python
-class AccountContextService:
-    async def get_context(self, user_id: str, tenant_id: str) -> dict:
-        # Fetch relevant account information
-        account = await self.account_db.get(tenant_id)
-        user = await self.user_db.get(user_id)
-        
-        # Recent activity
-        recent_tickets = await self.tickets_db.get_recent(user_id, limit=5)
-        recent_actions = await self.activity_log.get_recent(user_id, limit=10)
-        
-        # Subscription details
-        subscription = await self.billing.get_subscription(tenant_id)
-        
-        return {
-            "account_name": account["name"],
-            "plan": subscription["plan"],
-            "user_role": user["role"],
-            "recent_tickets": self.summarize_tickets(recent_tickets),
-            "account_age_days": (datetime.now() - account["created_at"]).days,
-            "is_trial": subscription["is_trial"]
-        }
-```
-
-### Response Generation
+### Response Generation (Claude 3.7 Sonnet)
 
 ```python
 class ResponseGenerator:
-    async def generate(
-        self,
-        query: str,
-        context: list[dict],
-        account_context: dict,
-        history: list[dict]
-    ) -> dict:
-        system_prompt = f"""
-You are a helpful customer support agent for [Company Name].
-
-Account context:
-- Customer: {account_context['account_name']}
-- Plan: {account_context['plan']}
-- Role: {account_context['user_role']}
-
-Guidelines:
-- Be helpful, professional, and empathetic
-- Use the provided context to answer accurately
-- If you are unsure, say so and offer to escalate
-- Never make up information not in the context
-- For billing issues, be extra careful with numbers
-- Always end with an offer to help further
-"""
+    async def generate(self, query: str, context: list[dict]) -> dict:
+        # Claude 3.7 Sonnet for 'Hybrid Reasoning'
+        # Toggle 'Thinking' mode for complex billing issues
+        is_complex = self.detect_complexity(query)
         
-        context_str = self.format_context(context)
-        
-        response = await self.llm.generate(
-            system=system_prompt,
-            messages=history + [
-                {"role": "system", "content": f"Relevant information:\n{context_str}"},
-                {"role": "user", "content": query}
-            ],
-            temperature=0.3  # Lower for accuracy
+        response = await self.anthropic.messages.create(
+            model="claude-3-7-sonnet-20250219",
+            thinking={"enabled": is_complex, "budget_tokens": 2048},
+            messages=[{"role": "user", "content": f"Context: {context}\nQuery: {query}"}]
         )
-        
-        # Extract confidence
-        confidence = await self.assess_confidence(query, response, context)
-        
-        return {
-            "response": response,
-            "confidence": confidence,
-            "sources": [c["source"] for c in context]
-        }
+        return {"response": response.content[0].text}
 ```
+
+> [!NOTE]
+> **Production Wisdom:** While Gemini 3 Flash is great for high-volume retrieval, **Claude 3.5 Sonnet** remains the most "stable" generator for many support teams who have spent months fine-tuning guardrails around its specific personality and refusal patterns.
 
 ---
 
@@ -430,16 +331,16 @@ class QualityMonitor:
 
 ## Cost Analysis
 
-### Per-Conversation Cost Breakdown
+### Per-Conversation Cost Breakdown (Dec 2025)
 
 | Component | Cost | Notes |
 |-----------|------|-------|
-| Intent classification | $0.001 | GPT-4o-mini |
-| RAG retrieval | $0.002 | Embeddings + search |
-| Reranking | $0.003 | Cross-encoder |
-| Response generation | $0.015 | Claude 3.5 Sonnet |
-| Quality sampling | $0.001 | 5% sample rate |
-| **Total** | **~$0.022** | Per conversation |
+| Intent classification | $0.0001 | GPT-5.2-mini ($0.10/1M) |
+| RAG retrieval | $0.0001 | Gemini 3 Flash ($0.05/1M) |
+| Thinking mode | $0.0050 | Claude 3.7 Thinking (avg 250 tokens) |
+| Response generation | $0.0030 | Claude 3.7 Sonnet ($3/1M in) |
+| Quality sampling | $0.0001 | 5% sample rate on GPT-5.2 |
+| **Total** | **~$0.0083** | **Per conversation (62% reduction vs 2024)** |
 
 ### Monthly Cost Projection
 

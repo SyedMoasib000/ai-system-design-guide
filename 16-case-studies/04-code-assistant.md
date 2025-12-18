@@ -177,108 +177,47 @@ class CodeContextAssembler:
 
 ## Code Generation Pipeline
 
-### Completion Service (Low Latency)
+### Completion Service (Dec 2025)
 
 ```python
-class CompletionService:
+class DeepCompletion:
     """
-    Optimized for < 200ms latency.
-    Uses smaller model, aggressive caching, speculative execution.
+    Sub-150ms latency using o4-mini with speculative decoding.
     """
-    
     def __init__(self):
-        self.model = "codestral-22b"  # Fast code model
-        self.cache = CompletionCache()
-        self.speculator = SpeculativeDecoder()
+        self.model = "o4-mini"  # Native code-optimized mini
+        self.draft_model = "nano-code-1b" # Local on-device model
     
-    async def complete(self, request: CompletionRequest) -> CompletionResponse:
-        # Check cache first
-        cached = await self.cache.get(request.context_hash)
-        if cached:
-            return cached
-        
-        # Assemble minimal context
-        context = self.assembler.assemble_minimal(
-            request.file_content,
-            request.cursor,
-            max_tokens=2000
-        )
-        
-        # Generate with speculation for speed
-        completion = await self.speculator.generate(
-            context,
-            max_tokens=50,  # Short completions
-            stop=["\n\n", "def ", "class "]  # Stop at boundaries
-        )
-        
-        # Cache for reuse
-        await self.cache.set(request.context_hash, completion)
-        
-        return CompletionResponse(
-            text=completion,
-            confidence=self.score_confidence(completion)
+    async def complete(self, context: str) -> str:
+        # Speculative decoding: 1B model drafts, o4-mini verifies
+        return await self.openai.generate(
+            model=self.model,
+            draft_model=self.draft_model,
+            prompt=context,
+            max_tokens=64
         )
 ```
 
-### Generation Service (High Quality)
+### Generation Service (The 'Claude Code' Era)
 
 ```python
-class GenerationService:
+class AgenticGeneration:
     """
-    Optimized for quality over latency.
-    Uses best-of-N with verification.
+    Using Claude 3.7 (Hybrid) for autonomous refactoring.
     """
-    
-    def __init__(self):
-        self.model = "claude-3.5-sonnet"  # Best for code
-        self.verifier = CodeVerifier()
-    
-    async def generate(self, request: GenerationRequest) -> GenerationResponse:
-        # Rich context assembly
-        context = self.assembler.assemble_full(
-            request.file_content,
-            request.cursor,
-            request.open_files,
-            request.project_info,
-            max_tokens=8000
+    async def refactor_module(self, folder_path: str):
+        # Claude 3.7 Sonnet with 'Thinking' enabled for architecture consistency
+        agent = ClaudeCodeAgent(
+            model="claude-3-7-sonnet",
+            tools=["ls", "read_file", "write_file", "test_runner"]
         )
         
-        # Generate N candidates
-        candidates = await asyncio.gather(*[
-            self.model.generate(
-                self.build_prompt(context, request.instruction),
-                temperature=0.8
-            )
-            for _ in range(8)
-        ])
-        
-        # Filter and score
-        scored = []
-        for candidate in candidates:
-            # Syntax check
-            if not self.verifier.check_syntax(candidate, request.language):
-                continue
-            
-            # Security scan
-            security_result = await self.verifier.security_scan(candidate)
-            if security_result.has_vulnerabilities:
-                continue
-            
-            # Quality score
-            score = await self.score_quality(candidate, context)
-            scored.append((candidate, score))
-        
-        if not scored:
-            return GenerationResponse(text=None, error="No valid generations")
-        
-        # Return best
-        best = max(scored, key=lambda x: x[1])
-        return GenerationResponse(
-            text=best[0],
-            confidence=best[1],
-            alternatives=[s[0] for s in sorted(scored, key=lambda x: -x[1])[:3]]
-        )
+        # Agent explores codebase, understands dependencies, and applies fix
+        return await agent.run(f"Refactor {folder_path} to use async/await.")
 ```
+
+> [!TIP]
+> **Production Choice:** While Claude 4.5 Opus is a coding beast, **Claude 3.7 Sonnet** is the preferred production choice in Dec 2025 for IDEs due to its **Hybrid Reasoning**—developers can toggle "Thinking" for hard bugs and "Fast" for boilerplate.
 
 ---
 
@@ -472,17 +411,17 @@ class CompletionCache:
 | Security (0 high severity) | 100% | 99.8% |
 | Acceptance rate | > 30% | 34% |
 
-### Cost Analysis
+### Cost Analysis (Dec 2025)
 
-| Component | Cost per 1M suggestions |
-|-----------|------------------------|
-| Completion model | $12 |
-| Generation model | $85 |
-| Verification | $15 |
-| Infrastructure | $25 |
-| **Total** | **~$137** |
+| Component | Cost per 1M suggestions | Notes |
+|-----------|------------------------|-------|
+| **Completion (o4-mini)** | $0.20 | Extremely optimized for volume |
+| **Agentic Task (Claude 3.7)** | $45.00 | Assuming 10k tokens + Thinking |
+| **Verification (Local)** | $0.00 | Shifted to on-device Nano |
+| **Infrastructure** | $15.00 | Managed GPU serving |
+| **Total (Blended)** | **~$12.00** | **90% reduction vs 2024** |
 
-*Blended cost assuming 80% completions, 20% generations*
+*Blended cost assumes 98% completions, 2% high-value agentic refactors.*
 
 ---
 
