@@ -9,7 +9,8 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 - [Open Source Models](#open-source-models)
 - [Specialized Models](#specialized-models)
 - [Embedding Models](#embedding-models)
-- [Model Selection Framework](#model-selection-framework)
+- [Model Selection Framework & Semantic Routing](#model-selection-framework)
+- [Sovereign AI & Data Residency](#sovereign-ai-and-data-residency)
 - [Capability Comparison](#capability-comparison)
 - [Interview Questions](#interview-questions)
 - [References](#references)
@@ -245,6 +246,28 @@ What is your primary constraint?
 └── Privacy → Self-host or use on-prem
     └── Choose open models with appropriate license
 ```
+
+### Semantic Routing
+
+In 2025, static decision trees are being replaced by **Semantic Routers**.
+- **How it works**: A small, fast embedding model vectorize the query. If it matches a "known easy" cluster, it's routed to a cheap model (e.g., Gemini 3 Flash). If it hits an "agentic/logic" cluster, it goes to o3 or Claude 4.5.
+- **Benefit**: Automates cost-optimization without hardcoded rules.
+
+---
+
+## Sovereign AI and Data Residency
+
+**The 2025 Regulatory Shift:**
+Enterprises now prioritize "Sovereign AI" where data and weights must stay within specific borders (GDPR, India, Saudi Arabia, etc.).
+
+| Solution | Provider | Use Case |
+|----------|----------|----------|
+| **Azure Sovereign Cloud** | Microsoft | Dedicated infra in 40+ regions |
+| **AWS Sovereign Cloud** | Amazon | Physically isolated VPCs |
+| **OCI Sovereign AI** | Oracle | Dedicated OCI regions for govt/finance |
+| **Private Llama 4** | Meta (Self-host) | Maximum data sovereignty |
+
+**Tradeoff**: Sovereign clouds often carry a **20-30% premium** over standard global regions but are mandatory for finance and government sectors.
 
 ### Cost Comparison at Scale
 

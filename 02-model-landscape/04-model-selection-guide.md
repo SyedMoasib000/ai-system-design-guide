@@ -72,7 +72,8 @@ Start Here
 |--------|--------|----------------|
 | **Agentic Reliability** | High | Tool-calling accuracy, multi-step planning |
 | **Context Recall** | High | Needle-in-a-haystack performance at 1M+ |
-| **Ecosystem Maturity** | High | **(New)** Production track record, SDK support, and rate limit ceilings |
+| **Rate Limit Ceiling** | High | **(Principal Nuance)**: Can the provider handle your P99 throughput without 429 errors? |
+| **Ecosystem Maturity** | High | Production track record, SDK support, and Enterprise SLA |
 | **Cost / Output Token** | Medium | Agentic loops consume 5x-10x more tokens |
 
 ---
@@ -254,23 +255,30 @@ class ModelRouter:
         return self.models[query_type]
 ```
 
-### Cascade Pattern
+### Cascade Pattern (2025 Refinement)
+
+**The Logic**: Never use a 70B model for a task a 1B model can do. Use a "Router" to score confidence.
 
 ```python
 class ModelCascade:
-    """Try cheap model first, escalate if needed."""
+    """The 'Efficiency First' Pattern."""
     
-    async def generate(self, query: str) -> str:
-        # Try cheap model first
-        cheap_response = await self.cheap_model.generate(query)
-        confidence = await self.score_confidence(cheap_response)
+    async def generate_optimized(self, query: str):
+        # 1. Draft check (SLM / Classifier)
+        if is_simple_intent(query):
+            return await gpt4o_mini.generate(query)
+            
+        # 2. Main Generation (Efficient model)
+        response = await claude_sonnet.generate(query)
         
-        if confidence > 0.8:
-            return cheap_response
-        
-        # Escalate to better model
-        return await self.expensive_model.generate(query)
+        # 3. Validation / Escalate
+        if needs_verification(response):
+            return await o3.generate(f"Verify this: {response}")
+            
+        return response
 ```
+
+**Principal-level Tip:** Implement "Semantic Fallback" where you don't just retry the same model on error, but immediately jump to a larger model or a different provider (OpenAI -> Anthropic) to avoid correlated failures.
 
 ---
 

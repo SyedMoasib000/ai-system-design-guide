@@ -8,7 +8,8 @@ Understanding the cost structure of LLM systems is essential for production plan
 - [Current API Pricing](#current-api-pricing)
 - [Cost Calculation](#cost-calculation)
 - [Cost Optimization Strategies](#cost-optimization-strategies)
-- [Self-Hosting Economics](#self-hosting-economics)
+- [Context Caching Economics](#context-caching-economics)
+- [Self-Hosting & GPU Cloud Arbitrage](#self-hosting-economics)
 - [Total Cost of Ownership](#total-cost-of-ownership)
 - [Interview Questions](#interview-questions)
 - [References](#references)
@@ -316,14 +317,41 @@ response = model.generate(
 | Strategy | Effort | Potential Savings |
 |----------|--------|-------------------|
 | Model routing | Medium | 50-70% |
+| **Context Caching** | Low | **60-90% (Input)** |
 | Prompt optimization | Low | 20-40% |
 | Response caching | Medium | 20-40% |
-| Batch processing | Low | 50% (when applicable) |
-| Output length control | Low | 20-30% |
+| Batch processing | Low | 50% (OpenAI/Anthropic) |
 
 ---
 
-## Self-Hosting Economics
+## Context Caching Economics
+
+**The 2025 "Golden Rule" for RAG.**
+If you have a fixed system prompt or a shared knowledge base (prefix) larger than 10,000 tokens, **Context Caching** is mandatory.
+
+**Break-even Analysis:**
+- **Standard Input**: $3.00 / 1M tokens (Claude 3.7)
+- **Cached Input**: $0.30 / 1M tokens (90% discount)
+- **Cache Write Fee**: $3.75 / 1M tokens (one-time)
+
+`Break-even = (Write Fee) / (Standard Rate - Cached Rate) ≈ 1.4 requests`
+
+If your long prefix is used by **more than 2 users**, caching it is strictly cheaper than sending it raw every time.
+
+---
+
+## Self-Hosting & GPU Cloud Arbitrage
+
+**The Reserved vs. Serverless Tradeoff:**
+
+| Model Size | Serverless (RunPod/Together) | Reserved (Lambda/AWS) |
+|------------|-----------------------------|-----------------------|
+| **Burst Capacity** | Infinite (cold starts) | Fixed |
+| **Utilization** | Pay only for compute time | 24/7 fixed cost |
+| **TCO Break-even**| **Cost-effective < 40% util** | **Cost-effective > 40% util** |
+
+**Principal-level Nuance:**
+"GPU Cloud Arbitrage" involves moving production workloads between providers based on **Spot Instance availability**. In 2025, tools like **Skypilot** automate this, saving up to 60% on self-hosting costs by following "low-demand" regions globally.
 
 ### When Self-Hosting Makes Sense
 

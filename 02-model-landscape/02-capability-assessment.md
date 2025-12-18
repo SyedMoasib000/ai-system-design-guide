@@ -9,6 +9,8 @@ This chapter covers how to evaluate and compare model capabilities for your spec
 - [Building Custom Evaluations](#building-custom-evaluations)
 - [Common Evaluation Pitfalls](#common-evaluation-pitfalls)
 - [Practical Assessment Process](#practical-assessment-process)
+- [Internal Elo-based Evaluation](#internal-elo-based-evaluation)
+- [Reasoning Calibration & Efficiency](#reasoning-calibration)
 - [A/B Testing Models](#ab-testing-models)
 - [Interview Questions](#interview-questions)
 - [References](#references)
@@ -82,11 +84,42 @@ def evaluate_agentic_flow(agent, task_environment):
 
 Does the "Thinking" mode improve output accuracy vs standard generation?
 
-| Mode | Accuracy (Math) | Accuracy (Code) | Avg Latency |
-|------|-----------------|-----------------|-------------|
-| **Standard** | 72% | 68% | 1.2s |
-| **Thinking** | 94% | 89% | 12.5s |
-| **Hybrid** | Variable | Variable | User-defined |
+| Mode | Accuracy (Math) | Accuracy (Code) | Avg Latency | Tokens / Output |
+|------|-----------------|-----------------|-------------|-----------------|
+| **Standard** | 72% | 68% | 1.2s | 400 |
+| **Thinking** | 94% | 89% | 12.5s | 2400 |
+| **Hybrid** | Variable | Variable | User-defined | Configurable |
+
+### Reasoning Calibration
+
+**The "Over-Thinking" Problem:**
+Models often spend 2000+ "thinking" tokens on a question that could be answered with 10 tokens (e.g., "What is 2+2?").
+
+**Principal-level Nuance:**
+Evaluate models based on **Logic Efficiency**: `Accuracy / (Inference Tokens)`.
+Production systems in 2025 use **Model Arbitration**: A small model (Gemini 3 Flash) detects if a query needs "Thinking" mode. This avoids the 10x latency/cost penalty for simple queries.
+
+---
+
+## Internal Elo-based Evaluation
+
+**Moving beyond static rubrics.**
+Rubrics (1-5 scales) are prone to "judge fatigue" and "score drifting." Late 2025 systems use **Pairwise Elo** for internal golden sets.
+
+**The Workflow:**
+1. **Blind Side-by-Side:** Model A and Model B generate answers for the same query.
+2. **The Judge:** An "Ultra" model (GPT-5.2 or Human) selects the winner.
+3. **Elo Update:** Update the internal leaderboard.
+
+```python
+def update_elo(winner_elo, loser_elo, k=32):
+    expected_winner = 1 / (1 + 10 ** ((loser_elo - winner_elo) / 400))
+    new_winner_elo = winner_elo + k * (1 - expected_winner)
+    new_loser_elo = loser_elo + k * (0 - (1 - expected_winner))
+    return new_winner_elo, new_loser_elo
+```
+
+**Why it wins:** It provides a **relative** ranking that is much more robust to changes in judge personality or model versioning.
 
 ### Dimension 4: Context Recall (Dec 2025)
 
