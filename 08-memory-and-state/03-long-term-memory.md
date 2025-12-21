@@ -16,7 +16,7 @@ Long-term memory (L2 & L3) provides persistence across sessions. In late 2025, w
 
 ## Episodic Memory: The Personal Log
 
-Episodic memory stores **Trajectories**—sequences of events and their outcomes.
+Episodic memory stores **Trajectories**: sequences of events and their outcomes.
 - **Data Structure**: `(Timestamp, Interaction_ID, Trajectory_Summary, Embedding)`.
 - **The Rationale**: If an agent successfully built a React component using a specific tool sequence last month, it should "Recall" that success when asked to build another one today.
 - **Implementation Note**: We store the *Summary* for retrieval and the *Raw Logs* in cold storage (S3/GCS) for forensic analysis.
@@ -70,7 +70,7 @@ I use **Vector DBs** for **Episodic Context** (unstructured logs, past conversat
 ### Q: What is "Catastrophic Forgetting" in the context of learned agentic memory?
 
 **Strong answer:**
-In fine-tuned agents, catastrophic forgetting happens when new training data wipes out old knowledge. In **Agentic Memory (RAG-based)**, it refers to **Index Overload**. If an agent adds 1,000 low-quality new "facts" to its memory, the retrieval precision drops, effectively making it "forget" the older, higher-quality facts because they are buried in noise. We mitigate this with **Quality-Weighted Retrieval**—memories with high "Verification Scores" from a supervisor are boosted over raw logs.
+In fine-tuned agents, catastrophic forgetting happens when new training data wipes out old knowledge. In **Agentic Memory (RAG-based)**, it refers to **Index Overload**. If an agent adds 1,000 low-quality new "facts" to its memory, the retrieval precision drops, effectively making it "forget" the older, higher-quality facts because they are buried in noise. We mitigate this with **Quality-Weighted Retrieval**: memories with high "Verification Scores" from a supervisor are boosted over raw logs.
 
 ---
 

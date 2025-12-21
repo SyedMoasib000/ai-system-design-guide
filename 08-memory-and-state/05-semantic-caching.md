@@ -40,7 +40,7 @@ In late 2025, caching has evolved from exact string matching to **Semantic Match
 Late 2025's standard stack:
 - **RedisVL**: Provides low-latency vector search directly within a Redis instance.
 - **Hybrid Caching**: Using Redis for both metadata (keys) and vector payloads.
-- **TTL**: Semantic caches should have a TTL (Time-To-Live). In 2025, we use **Dynamic TTL**—popular answers live longer, while "stale" information is evicted regularly.
+- **TTL**: Semantic caches should have a TTL (Time-To-Live). In 2025, we use **Dynamic TTL**: popular answers live longer, while "stale" information is evicted regularly.
 
 ---
 
@@ -57,7 +57,7 @@ With the rise of Gemini 3 and GPT-5 Native Omni, we now cache **Image and Audio 
 ### Q: What is "Semantic Drift" in caching, and how do you prevent it?
 
 **Strong answer:**
-Semantic Drift occurs when the similarity threshold is too loose (e.g., 0.8 instead of 0.95). A query like *"How do I fix my car?"* might match a cached response for *"How do I wash my car?"*. To prevent this, we use **Multi-Stage Validation**: 1) Vector similarity check, 2) **Entity-Match check** (ensures both queries involve "Car" and the same "Verb"), and 3) **Threshold Tightening**—for technical or medical queries, we require $>0.98$ similarity to return a cached result.
+Semantic Drift occurs when the similarity threshold is too loose (e.g., 0.8 instead of 0.95). A query like *"How do I fix my car?"* might match a cached response for *"How do I wash my car?"*. To prevent this, we use **Multi-Stage Validation**: 1) Vector similarity check, 2) **Entity-Match check** (ensures both queries involve "Car" and the same "Verb"), and 3) **Threshold Tightening**: for technical or medical queries, we require $>0.98$ similarity to return a cached result.
 
 ### Q: Why is a Semantic Cache sometimes *more* expensive than a raw LLM call at low volume?
 

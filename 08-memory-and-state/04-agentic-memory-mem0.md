@@ -73,7 +73,7 @@ Scale and **Deduplication**. A custom script often creates duplicate records or 
 ### Q: How do you handle "Memory Fatigue" where an agent brings up too many irrelevant past details?
 
 **Strong answer:**
-We use **Thresholded Relevance**. Mem0 returns a "Relevance Score" for every recalled fact. We only inject facts into the prompt if their score is $>0.85$. Additionally, we use **Negative Retrieval**—the agent is instructed to only use memory if it directly contradicts a potential hallucination or answers a current "Unknown." We also perform **Memory Pruning** where "Low-Value" memories (e.g., "The user mentioned it's raining") are automatically deleted after 24 hours.
+We use **Thresholded Relevance**. Mem0 returns a \"Relevance Score\" for every recalled fact. We only inject facts into the prompt if their score is $>0.85$. Additionally, we use **Negative Retrieval**: the agent is instructed to only use memory if it directly contradicts a potential hallucination or answers a current \"Unknown.\" We also perform **Memory Pruning** where \"Low-Value\" memories (e.g., \"The user mentioned it's raining\") are automatically deleted after 24 hours.
 
 ---
 
