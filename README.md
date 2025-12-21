@@ -10,6 +10,7 @@
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/Updated-December%202025-blue.svg" alt="Last Updated"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
+  <a href="#-contributing"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
   <a href="https://github.com/ombharatiya/ai-system-design-guide"><img src="https://img.shields.io/github/stars/ombharatiya/ai-system-design-guide?style=social" alt="Stars"></a>
 </p>
 
