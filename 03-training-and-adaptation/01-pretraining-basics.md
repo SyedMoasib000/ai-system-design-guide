@@ -32,7 +32,7 @@ The model predicts the next token given the context. This simple objective, at s
 In 2025, the focus has shifted from "More Data" to "Better Curriculum."
 
 ### The 100T Token Horizon
-Frontier models (Llama 4, GPT-5) are trained on 15T to 100T tokens. At this scale, **Deduplication** and **Quality Filtering** are the primary differentiators.
+Frontier models (Llama 4, GPT-5.2) are trained on 15T to 100T tokens. At this scale, **Deduplication** and **Quality Filtering** are the primary differentiators.
 
 ### Data Mixture (Dec 2025 Standard)
 | Component | Percentage | Purpose |

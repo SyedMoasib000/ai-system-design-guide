@@ -50,7 +50,7 @@ Production RAG systems are now categorized by their "Agentic Depth":
 
 ## RAG vs. 2M Context (The "Hybrid Era")
 
-With context windows like Gemini 1.5 Pro (2M+) and Claude 3.7 (1M+), RAG is changing.
+With context windows like Gemini 1.5 Pro (2M+) and Claude Sonnet 4.5 (1M+), RAG is changing.
 
 - **In-Context RAG (ICR)**: For datasets < 50k tokens, we skip the vector DB and put EVERYTHING in the prompt.
 - **Prompt Caching**: Makes Long-Context RAG 90% cheaper by caching the "Background Knowledge" on the GPU.

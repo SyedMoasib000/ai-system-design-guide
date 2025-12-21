@@ -34,7 +34,7 @@ The most effective cost-saving strategy is to use the **cheapest model capable o
 **The 2025 Cascade Pattern:**
 1. **Classifier**: A tiny model (0.5B) determines query complexity ($0.00).
 2. **Tier 1 (SLM)**: 90% of queries (greetings, simple Q&A) go to an 8B model ($).
-3. **Tier 2 (Frontier)**: 9% of queries (complex reasoning) go to a 405B/GPT-5 model ($$$).
+3. **Tier 2 (Frontier)**: 9% of queries (complex reasoning) go to a 405B/GPT-5.2 model ($$$).
 4. **Tier 3 (Reasoning)**: 1% of queries (expert-level) go to o1-style models ($$$$$).
 
 **Net result**: 80% cost reduction vs. sending all traffic to Tier 2.

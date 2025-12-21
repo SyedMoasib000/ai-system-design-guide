@@ -16,7 +16,7 @@ Context engineering is the science of filling the LLM's finite "working memory" 
 
 ## The Long Context Paradigm (2M+ Tokens)
 
-Models like Gemini 1.5 Pro and Claude 3.7 have multi-million token context windows. 
+Models like Gemini 1.5 Pro and Claude Sonnet 4.5 have multi-million token context windows. 
 
 **2025 Insight**: "Context is the new RAG." 
 For datasets under 100,000 documents, it is often more accurate and faster to put the entire dataset in the context window than to use an external vector database. This is called **"In-Context RAG."**

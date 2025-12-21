@@ -74,7 +74,7 @@ For a modern, production-grade agentic system:
 ### Q: If you had to build a system that works across OpenAI, Anthropic, and local Llama models, how would you architect it?
 
 **Strong answer:**
-I would use **DSPy** for the prompt layer and **LangChain/LangGraph** for the orchestration layer. DSPy's **Signatures** allow me to decouple the task definition from the model's specific "Vibes." I would then use a **Universal Model Gateway** (like LiteLLM or an internal proxy) to handle the different API formats. This stack ensures that if I need to switch from GPT-4o to Claude 3.7 for cost or latency reasons, I do not have to rewrite 50 prompts; I just re-compile or update the config.
+I would use **DSPy** for the prompt layer and **LangChain/LangGraph** for the orchestration layer. DSPy's **Signatures** allow me to decouple the task definition from the model's specific "Vibes." I would then use a **Universal Model Gateway** (like LiteLLM or an internal proxy) to handle the different API formats. This stack ensures that if I need to switch from GPT-4o to Claude Sonnet 4.5 for cost or latency reasons, I do not have to rewrite 50 prompts; I just re-compile or update the config.
 
 ---
 

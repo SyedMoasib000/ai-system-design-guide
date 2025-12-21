@@ -63,7 +63,7 @@ In DSPy, your prompt is like a weight in a neural network. You don't "hardcode" 
 
 Optimization requires a **Metric** (a function that returns a score).
 - **Exact Match**: `prediction.answer == target.answer`
-- **LLM-as-Judge**: Use a larger model (GPT-5) to grade the output of a smaller model (Llama 8B).
+- **LLM-as-Judge**: Use a larger model (GPT-5.2) to grade the output of a smaller model (Llama 8B).
 
 ---
 

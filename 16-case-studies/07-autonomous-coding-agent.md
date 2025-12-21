@@ -23,12 +23,12 @@ A developer tools company wants to build an **AI coding assistant** that can aut
 ```mermaid
 flowchart LR
     subgraph Planning["Planning Phase"]
-        TASK[User Task] --> PLANNER[Planner Agent<br/>Claude 3.7 Sonnet]
+        TASK[User Task] --> PLANNER[Planner Agent<br/>Claude Sonnet 4.5]
         PLANNER --> PLAN[Task Plan]
     end
 
     subgraph Execution["Execution Loop"]
-        PLAN --> CODER[Coder Agent<br/>Claude 3.7 Sonnet]
+        PLAN --> CODER[Coder Agent<br/>Claude Sonnet 4.5]
         CODER --> SANDBOX[E2B Sandbox]
         SANDBOX --> TESTS{Tests Pass?}
         TESTS -->|No| DEBUGGER[Debugger Agent]
@@ -56,9 +56,9 @@ flowchart LR
 
 **Answer:** Security. The agent generates and runs code. Running it locally exposes the host system. E2B provides an isolated container that resets after each session. If the agent generates `rm -rf /`, it only destroys the sandbox.
 
-### 3. Why Claude 3.7 Sonnet for Both?
+### 3. Why Claude Sonnet 4.5 for Both?
 
-**Answer:** Claude 3.7 Sonnet has the best code generation benchmarks (SWE-bench) in late 2025, and its hybrid reasoning mode gives us planning depth when needed. For the coding agent specifically, we enable "Extended Thinking" only on debugging loops, not on initial generation, to control costs.
+**Answer:** Claude Sonnet 4.5 has the best code generation benchmarks (SWE-bench) in late 2025, and its hybrid reasoning mode gives us planning depth when needed. For the coding agent specifically, we enable "Extended Thinking" only on debugging loops, not on initial generation, to control costs.
 
 ---
 
@@ -131,9 +131,9 @@ async def execute_with_retry(task: str, max_attempts: int = 3):
 
 | Phase | Model | Tokens (avg) | Cost |
 |-------|-------|--------------|------|
-| Planning | Claude 3.7 (Extended) | 8,000 in / 2,000 out | $0.06 |
+| Planning | Claude Sonnet 4.5 (Extended) | 8,000 in / 2,000 out | $0.06 |
 | File Retrieval | Embeddings | 50,000 | $0.01 |
-| Coding (per attempt) | Claude 3.7 | 15,000 in / 3,000 out | $0.09 |
+| Coding (per attempt) | Claude Sonnet 4.5 | 15,000 in / 3,000 out | $0.09 |
 | Testing (3 runs avg) | - | - | $0.00 |
 | **Total (1.5 attempts avg)** | | | **$0.21** |
 

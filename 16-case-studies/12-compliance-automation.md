@@ -40,7 +40,7 @@ flowchart TB
         FDA --> RETRIEVE
         PRECEDENT --> RETRIEVE
         INTERNAL --> RETRIEVE
-        RETRIEVE --> EVALUATE[Evaluate Compliance<br/>Claude 3.7 Sonnet]
+        RETRIEVE --> EVALUATE[Evaluate Compliance<br/>Claude Sonnet 4.5]
     end
 
     subgraph Output["Compliance Report"]

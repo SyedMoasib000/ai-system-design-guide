@@ -177,12 +177,12 @@ class SupportKnowledgeBase:
         return results
 ```
 
-### Response Generation (Claude 3.7 Sonnet)
+### Response Generation (Claude Sonnet 4.5)
 
 ```python
 class ResponseGenerator:
     async def generate(self, query: str, context: list[dict]) -> dict:
-        # Claude 3.7 Sonnet for 'Hybrid Reasoning'
+        # Claude Sonnet 4.5 for 'Hybrid Reasoning'
         # Toggle 'Thinking' mode for complex billing issues
         is_complex = self.detect_complexity(query)
         
@@ -337,8 +337,8 @@ class QualityMonitor:
 |-----------|------|-------|
 | Intent classification | $0.0001 | GPT-5.2-mini ($0.10/1M) |
 | RAG retrieval | $0.0001 | Gemini 3 Flash ($0.05/1M) |
-| Thinking mode | $0.0050 | Claude 3.7 Thinking (avg 250 tokens) |
-| Response generation | $0.0030 | Claude 3.7 Sonnet ($3/1M in) |
+| Thinking mode | $0.0050 | Claude Sonnet 4.5 Thinking (avg 250 tokens) |
+| Response generation | $0.0030 | Claude Sonnet 4.5 ($3/1M in) |
 | Quality sampling | $0.0001 | 5% sample rate on GPT-5.2 |
 | **Total** | **~$0.0083** | **Per conversation (62% reduction vs 2024)** |
 

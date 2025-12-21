@@ -34,7 +34,7 @@ The most robust defense is not a "better prompt," but a **Security Proxy**.
 
 ## Input Isolation (XML & Markers)
 
-Frontier models (Claude 3.7, GPT-5.2) are specifically trained to respect XML tags for data isolation.
+Frontier models (Claude Sonnet 4.5, GPT-5.2) are specifically trained to respect XML tags for data isolation.
 
 ```markdown
 <system_instructions>

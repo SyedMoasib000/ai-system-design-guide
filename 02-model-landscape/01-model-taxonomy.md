@@ -24,7 +24,7 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 | Tier | Characteristics | Examples | Use Case |
 |------|-----------------|----------|----------|
 | **Ultra (New)** | Super-intelligent reasoning, agentic mastery | GPT-5.2, Claude 4.5 Opus, Gemini 3.0 Pro | Full autonomous agents, R&D |
-| Frontier | State-of-the-art general intelligence | Claude 3.7 Sonnet, GPT-4o, Gemini 2.0 Pro | Complex reasoning, production |
+| Frontier | State-of-the-art general intelligence | Claude Sonnet 4.5, GPT-4o, Gemini 2.0 Pro | Complex reasoning, production |
 | Strong | High efficiency, near-frontier | DeepSeek V3.2, GPT-5.2-mini | Scalable business logic |
 | Fast | Sub-100ms, cost-optimized | Gemini 3 Flash, Claude 4.5 Haiku, o4-mini | High-volume streaming, UI |
 | Small | Private, edge, specialized | Llama 4 8B, Nemotron 3 Nano, Phi-4 | Local privacy, specific tasks |
@@ -34,8 +34,8 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 | Mode | Capability | Models | Use Case |
 |------|------------|--------|----------|
 | **Standard** | Fast, intuitive response | GPT-4o, Claude 3.5 Sonnet | Chat, simple extraction |
-| **Thinking** | Internal CoT before output | o1, Claude 3.7 (Reasoning), DeepSeek-R1 | Math, code debugging |
-| **Hybrid** | User-controllable reasoning depth | Claude 3.7 Sonnet | Variable complexity tasks |
+| **Thinking** | Internal CoT before output | o1, Claude Sonnet 4.5 (Reasoning), DeepSeek-R1 | Math, code debugging |
+| **Hybrid** | User-controllable reasoning depth | Claude Sonnet 4.5 | Variable complexity tasks |
 
 ---
 
@@ -69,7 +69,7 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 **Best for:** Autonomous software engineering, complex legal/medical analysis.
 **Considerations:** Most expensive model in the market; benchmark leader.
 
-### Claude 3.7 Sonnet (Anthropic)
+### Claude Sonnet 4.5 (Anthropic)
 
 | Attribute | Value |
 |-----------|-------|
@@ -101,7 +101,7 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 | GPT-5.2 | ★★★★★ | ★★★★★ | ★★★★ | ★★★★★ | $$$ |
 | Claude 4.5 Opus | ★★★★★ | ★★★★★ | ★★★★ | ★★★★★ | $$$$$ |
 | Gemini 3.0 Pro | ★★★★ | ★★★★ | ★★★★★ | ★★★★ | $$ |
-| Claude 3.7 Sonnet | ★★★★★ | ★★★★★ | ★★★★ | ★★★★ | $$$ |
+| Claude Sonnet 4.5 | ★★★★★ | ★★★★★ | ★★★★ | ★★★★ | $$$ |
 
 ### Production Heritage & Maturity
 
@@ -153,7 +153,7 @@ While the "Ultra" tier (GPT-5.2, Claude 4.5) represents the bleeding edge, many 
 | Model | Parameters | Status | Notes |
 |-------|------------|--------|-------|
 | DeepSeek-V3.2 | 671B (MoE) | Frontier | GPT-4o level performance at 1/5 cost |
-| DeepSeek-R1 | 671B | Reasoning | Competitive with o1/Claude 3.7 |
+| DeepSeek-R1 | 671B | Reasoning | Competitive with o1/Claude Sonnet 4.5 |
 | DeepSeek-V3.2-Spec | 671B | Ultra | Heavyweight logic focus |
 
 ---
@@ -317,7 +317,7 @@ Assume 1M requests/day, 1K input + 500 output tokens average:
 |-------|------|-----------|-------|-----------------|
 | **Claude 4.5 Opus** | 91.2 | 96.0 | 98.2 | 80.9% |
 | **GPT-5.2** | 90.5 | 94.2 | 97.8 | 76.5% |
-| **Claude 3.7 Sonnet** | 89.2 | 93.0 | 97.1 | 72.0% |
+| **Claude Sonnet 4.5** | 89.2 | 93.0 | 97.1 | 72.0% |
 | **Gemini 3.0 Pro** | 88.5 | 89.1 | 95.2 | 68.4% |
 | **DeepSeek-R1** | 87.9 | 91.0 | 96.5 | 65.2% |
 | **Llama 4 405B** | 88.8 | 90.5 | 95.8 | 66.8% |
@@ -330,8 +330,8 @@ Assume 1M requests/day, 1K input + 500 output tokens average:
 
 | Task | Recommended Models | Why |
 |------|-------------------|-----|
-| **Software Engineering** | Claude 4.5 Opus, Claude 3.7 | "Claude Code" integration, SoTA SWE-bench |
-| **Complex Reasoning** | o3, DeepSeek-R1, Claude 3.7 | Native "Thinking" modes for multi-step logic |
+| **Software Engineering** | Claude 4.5 Opus, Claude Sonnet 4.5 | "Claude Code" integration, SoTA SWE-bench |
+| **Complex Reasoning** | o3, DeepSeek-R1, Claude Sonnet 4.5 | Native "Thinking" modes for multi-step logic |
 | **Autonomous Agents** | GPT-5.2, Claude 4.5 Opus | Best at tool-use reliability and planning |
 | **Long Context RAG** | Gemini 3.0 Pro (2.5M) | Unmatched context depth and recall |
 | **Real-time Multimodal** | Gemini 3 Flash, GPT-4o | Parallel vision/audio/text streams |

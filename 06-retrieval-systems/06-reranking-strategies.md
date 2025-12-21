@@ -56,7 +56,7 @@ Output only the indices in order (e.g., [4, 1, 9...]).
 
 To solve the latency problem, we now use **Distilled Small Language Models (SLMs)** for reranking.
 
-- **Process**: Take a giant model (GPT-5), have it rerank 1 million pairs, and use those labels to "distill" a tiny 0.1B parameter model.
+- **Process**: Take a giant model (GPT-5.2), have it rerank 1 million pairs, and use those labels to "distill" a tiny 0.1B parameter model.
 - **Result**: You get 95% of the reranking quality of a giant model with the latency of a standard CPU lookup ( < 10ms).
 
 ---

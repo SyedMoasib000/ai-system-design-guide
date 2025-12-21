@@ -70,7 +70,7 @@ Committed (1-year): $2.00 / 1M input tokens (20% savings)
 | Model | Input / 1M | Output / 1M | Reasoning |
 |-------|------------|-------------|-----------|
 | **Claude 4.5 Opus** | $15.00 | $75.00 | Native SoTA |
-| **Claude 3.7 Sonnet**| $3.00 | $15.00 | Hybrid (CoT) |
+| **Claude Sonnet 4.5**| $3.00 | $15.00 | Hybrid (CoT) |
 | **Claude 4.5 Haiku** | $0.20 | $1.00 | None |
 
 #### Google (The "Gemini 3" Generation)
@@ -87,7 +87,7 @@ Committed (1-year): $2.00 / 1M input tokens (20% savings)
 | **Cohere embed-v4** | $0.10 | 1024 |
 
 > [!IMPORTANT]
-> **Inference-time Compute Costs:** For models with "Thinking" or "Reasoning" modes (o1, o3, Claude 3.7), you are often charged for **internal thinking tokens** even if they are not shown to the user. This can increase total request cost by 3x-10x for logic-heavy tasks.
+> **Inference-time Compute Costs:** For models with "Thinking" or "Reasoning" modes (o1, o3, Claude Sonnet 4.5), you are often charged for **internal thinking tokens** even if they are not shown to the user. This can increase total request cost by 3x-10x for logic-heavy tasks.
 
 ---
 
@@ -330,7 +330,7 @@ response = model.generate(
 If you have a fixed system prompt or a shared knowledge base (prefix) larger than 10,000 tokens, **Context Caching** is mandatory.
 
 **Break-even Analysis:**
-- **Standard Input**: $3.00 / 1M tokens (Claude 3.7)
+- **Standard Input**: $3.00 / 1M tokens (Claude Sonnet 4.5)
 - **Cached Input**: $0.30 / 1M tokens (90% discount)
 - **Cache Write Fee**: $3.75 / 1M tokens (one-time)
 

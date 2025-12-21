@@ -16,7 +16,7 @@ In late 2025, the industry has hit the "Data Wall"—the exhaustion of high-qual
 
 ## After the "Data Wall": The Synthetic Shift
 
-Frontier models (Llama 4, GPT-5) are trained on 100T+ tokens. There simply isn't enough human text to sustain this scaling. 
+Frontier models (Llama 4, GPT-5.2) are trained on 100T+ tokens. There simply isn't enough human text to sustain this scaling. 
 **The 2025 Reality:** More than **50% of the training mixture** for frontier fine-tuning (and 10% of pretraining) is now synthetic.
 
 | Source | Human Data | Synthetic Data |

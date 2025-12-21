@@ -265,7 +265,7 @@ class LMHead(nn.Module):
 - **Pro**: Saves memory (vocab_size * hidden_dim).
 - **Con**: Forces input and output latent spaces to be identical, which can be suboptimal.
 
-**2025 Frontier Pattern (Llama 3/4, GPT-5):** Untied Embeddings
+**2025 Frontier Pattern (Llama 3/4, GPT-5.2):** Untied Embeddings
 - Output head has its own weights.
 - **Why?**: Larger vocabularies (128k+) make the embedding table a significant portion of the model. Untying allows the output head to specialize in "predictive logic" while input embeddings focus on "semantic understanding."
 - **System Impact**: Increases parameter count but often improves perplexity for multilingual and code tasks.

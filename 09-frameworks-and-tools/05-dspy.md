@@ -33,7 +33,7 @@ class ResearchAssistant(dspy.Signature):
     question = dspy.InputField()
     answer = dspy.OutputField(desc="A technical summary with citations")
 ```
-**Winning Nuance**: Signatures are **Model-Agnostic**. You can compile them for GPT-4o, Claude 3.7, or Llama 3.3 without changing a single line of code.
+**Winning Nuance**: Signatures are **Model-Agnostic**. You can compile them for GPT-4o, Claude Sonnet 4.5, or Llama 3.3 without changing a single line of code.
 
 ---
 

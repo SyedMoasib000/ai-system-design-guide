@@ -223,7 +223,7 @@ Tokenizers trained primarily on English have poor efficiency for other languages
 |-------|---------|----------|--------|--------|
 | GPT-2 | 2.5x | 3.0x | 2.8x | 6.0x |
 | GPT-4 (cl100k) | 1.4x | 1.6x | 1.5x | 3.2x |
-| GPT-5 (o200k) | 1.1x | 1.2x | 1.1x | 1.4x |
+| GPT-5.2 (o200k) | 1.1x | 1.2x | 1.1x | 1.4x |
 | Llama 3/4 (128k)| 1.2x | 1.3x | 1.2x | 1.5x |
 
 ---

@@ -46,7 +46,7 @@ Late 2025's standard stack:
 
 ## Multimodal Semantic Caching
 
-With the rise of Gemini 3 and GPT-5 Native Omni, we now cache **Image and Audio queries**.
+With the rise of Gemini 3 and GPT-5.2 Native Omni, we now cache **Image and Audio queries**.
 - **Visual Similarity**: Caching the description of an image if a semantically similar image was processed before.
 - **Audio Fingerprinting**: Caging transcripts for similar voice commands.
 

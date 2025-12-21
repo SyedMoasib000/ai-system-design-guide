@@ -1,6 +1,6 @@
 # OCR and Layout Analysis (Dec 2025)
 
-In late 2025, traditional OCR (Tesseract, specialized engines) has been largely superseded by **Native Multimodal LLMs** (Gemini 2.0, GPT-4o, Claude 3.7). We no longer "read characters"; we "understand layouts."
+In late 2025, traditional OCR (Tesseract, specialized engines) has been largely superseded by **Native Multimodal LLMs** (Gemini 2.0, GPT-4o, Claude Sonnet 4.5). We no longer "read characters"; we "understand layouts."
 
 ## Table of Contents
 

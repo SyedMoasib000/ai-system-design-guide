@@ -203,10 +203,10 @@ class DeepCompletion:
 ```python
 class AgenticGeneration:
     """
-    Using Claude 3.7 (Hybrid) for autonomous refactoring.
+    Using Claude Sonnet 4.5 (Hybrid) for autonomous refactoring.
     """
     async def refactor_module(self, folder_path: str):
-        # Claude 3.7 Sonnet with 'Thinking' enabled for architecture consistency
+        # Claude Sonnet 4.5 with 'Thinking' enabled for architecture consistency
         agent = ClaudeCodeAgent(
             model="claude-3-7-sonnet",
             tools=["ls", "read_file", "write_file", "test_runner"]
@@ -217,7 +217,7 @@ class AgenticGeneration:
 ```
 
 > [!TIP]
-> **Production Choice:** While Claude 4.5 Opus is a coding beast, **Claude 3.7 Sonnet** is the preferred production choice in Dec 2025 for IDEs due to its **Hybrid Reasoning**—developers can toggle "Thinking" for hard bugs and "Fast" for boilerplate.
+> **Production Choice:** While Claude 4.5 Opus is a coding beast, **Claude Sonnet 4.5** is the preferred production choice in Dec 2025 for IDEs due to its **Hybrid Reasoning**—developers can toggle "Thinking" for hard bugs and "Fast" for boilerplate.
 
 ---
 
@@ -416,7 +416,7 @@ class CompletionCache:
 | Component | Cost per 1M suggestions | Notes |
 |-----------|------------------------|-------|
 | **Completion (o4-mini)** | $0.20 | Extremely optimized for volume |
-| **Agentic Task (Claude 3.7)** | $45.00 | Assuming 10k tokens + Thinking |
+| **Agentic Task (Claude Sonnet 4.5)** | $45.00 | Assuming 10k tokens + Thinking |
 | **Verification (Local)** | $0.00 | Shifted to on-device Nano |
 | **Infrastructure** | $15.00 | Managed GPU serving |
 | **Total (Blended)** | **~$12.00** | **90% reduction vs 2024** |
