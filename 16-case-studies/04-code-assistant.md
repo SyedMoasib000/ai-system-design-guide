@@ -217,7 +217,7 @@ class AgenticGeneration:
 ```
 
 > [!TIP]
-> **Production Choice:** While Claude 4.5 Opus is a coding beast, **Claude Sonnet 4.5** is the preferred production choice in Dec 2025 for IDEs due to its **Hybrid Reasoning**—developers can toggle "Thinking" for hard bugs and "Fast" for boilerplate.
+> **Production Choice:** While Claude 4.5 Opus is a coding beast, **Claude Sonnet 4.5** is the preferred production choice in Dec 2025 for IDEs due to its **Hybrid Reasoning**: developers can toggle "Thinking" for hard bugs and "Fast" for boilerplate.
 
 ---
 
