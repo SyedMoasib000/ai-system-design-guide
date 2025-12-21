@@ -1,4 +1,5 @@
 # 🧠 AI System Design Guide
+### The Complete Interview & Production Reference
 
 <p align="center">
   <a href="https://github.com/ombharatiya"><img src="https://img.shields.io/badge/GitHub-ombharatiya-181717?logo=github" alt="GitHub"></a>
@@ -34,7 +35,7 @@
 
 | This Guide | Printed Books |
 |------------|---------------|
-| December 2025 models (GPT-5, Claude 4.5, Gemini 3) | Stuck on GPT-4 |
+| December 2025 models (GPT-5.2, Claude Opus 4.5, Gemini 3) | Stuck on GPT-4 |
 | MCP, Agentic RAG, Flow Engineering | Does not exist |
 | Real pricing with verification dates | Already wrong |
 | Staff-level interview Q&A | Generic questions |
@@ -46,7 +47,7 @@
 ```
 ├── 00-interview-prep/           # Questions, frameworks, exercises
 ├── 01-foundations/              # Transformers, attention, embeddings
-├── 02-model-landscape/          # GPT-5, Claude 4.5, Gemini 3, o3, DeepSeek
+├── 02-model-landscape/          # GPT-5.2, Claude Opus 4.5, Gemini 3, o3, DeepSeek
 ├── 03-training-and-adaptation/  # Fine-tuning, LoRA, DPO, distillation
 ├── 04-inference-optimization/   # KV cache, PagedAttention, vLLM
 ├── 05-prompting-and-context/    # CoT, DSPy, prompt injection defense
