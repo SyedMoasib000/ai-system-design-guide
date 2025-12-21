@@ -24,7 +24,7 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 | Tier | Characteristics | Examples | Use Case |
 |------|-----------------|----------|----------|
 | **Ultra (New)** | Super-intelligent reasoning, agentic mastery | GPT-5.2, Claude 4.5 Opus, Gemini 3.0 Pro | Full autonomous agents, R&D |
-| Frontier | State-of-the-art general intelligence | Claude Sonnet 4.5, GPT-4o, Gemini 2.0 Pro | Complex reasoning, production |
+| Frontier | State-of-the-art general intelligence | Claude Sonnet 4.5, GPT-4o, Gemini 3 Pro | Complex reasoning, production |
 | Strong | High efficiency, near-frontier | DeepSeek V3.2, GPT-5.2-mini | Scalable business logic |
 | Fast | Sub-100ms, cost-optimized | Gemini 3 Flash, Claude 4.5 Haiku, o4-mini | High-volume streaming, UI |
 | Small | Private, edge, specialized | Llama 4 8B, Nemotron 3 Nano, Phi-4 | Local privacy, specific tasks |

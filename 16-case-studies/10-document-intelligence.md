@@ -26,7 +26,7 @@ flowchart TB
     subgraph Intake["Document Intake"]
         PDF[Contract PDF] --> CLASSIFY{Native or Scanned?}
         CLASSIFY -->|Native| PARSE[PyMuPDF Parser]
-        CLASSIFY -->|Scanned| OCR[Vision-LLM OCR<br/>Gemini 2.0 Flash]
+        CLASSIFY -->|Scanned| OCR[Vision-LLM OCR<br/>Gemini 3 Flash]
     end
 
     subgraph Structure["Structure Recovery"]
@@ -59,13 +59,13 @@ flowchart TB
 
 ### 1. Vision-LLM for OCR Instead of Traditional OCR
 
-**Answer:** Scanned contracts often have stamps, handwritten annotations, and complex layouts (tables, multi-column). Traditional OCR (Tesseract) produces garbled output. Gemini 2.0 Flash "sees" the layout and produces clean Markdown with tables preserved. Cost is higher but accuracy gain is worth it.
+**Answer:** Scanned contracts often have stamps, handwritten annotations, and complex layouts (tables, multi-column). Traditional OCR (Tesseract) produces garbled output. Gemini 3 Flash "sees" the layout and produces clean Markdown with tables preserved. Cost is higher but accuracy gain is worth it.
 
 | Method | 100-page Scanned Contract | Accuracy | Cost |
 |--------|---------------------------|----------|------|
 | Tesseract | Noisy, broken tables | 60% | $0.02 |
 | AWS Textract | Better, still struggles with layout | 75% | $0.15 |
-| Gemini 2.0 Flash | Clean Markdown, tables intact | 92% | $0.35 |
+| Gemini 3 Flash | Clean Markdown, tables intact | 92% | $0.35 |
 
 ### 2. Parallel Extractors vs Single-Pass
 
@@ -158,7 +158,7 @@ EXTRACTORS = {
 
 | Stage | Cost per 100-page Doc |
 |-------|----------------------|
-| OCR (Gemini 2.0 Flash, if scanned) | $0.18 |
+| OCR (Gemini 3 Flash, if scanned) | $0.18 |
 | Section detection (GPT-4o-mini) | $0.03 |
 | Field extraction (4 parallel, GPT-4o-mini) | $0.12 |
 | Validation | $0.02 |
