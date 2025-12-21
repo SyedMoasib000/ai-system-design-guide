@@ -77,7 +77,7 @@ This chapter provides a comprehensive guide to the model landscape as of Decembe
 | Input Cost | $3 / 1M tokens |
 | Output Cost | $15 / 1M tokens |
 | Highlights | Hybrid Reasoning (toggle between fast/deep) |
-| Released | February 2025 |
+| Released | September 2025 |
 
 **Best for:** Coding, front-end web development, "Claude Code" agent.
 
